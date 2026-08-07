@@ -1,1 +1,449 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shedole Hospital | Cardiology & Emergency Care in Bhalki</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-nav {
+            background: rgba(11, 15, 25, 0.9);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-[#0b0f19] text-slate-100 antialiased selection:bg-red-500 selection:text-white">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 glass-nav border-b border-slate-800/80">
+        <div class="max-w-6xl mx-auto px-5 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg shadow-red-600/30">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <span class="text-2xl font-bold tracking-tight text-white">Shedole<span class="text-red-500">.</span></span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                <a href="#about" data-i18n="navAbout" class="hover:text-white transition-colors">About</a>
+                <a href="#services" data-i18n="navServices" class="hover:text-white transition-colors">Services</a>
+                <a href="#physician" data-i18n="navDoctor" class="hover:text-white transition-colors">Doctor</a>
+                <a href="#facilities" data-i18n="navFacilities" class="hover:text-white transition-colors">Facilities</a>
+                <a href="#contact" data-i18n="navContact" class="hover:text-white transition-colors">Contact</a>
+            </nav>
+
+            <!-- Language & Menu Controls -->
+            <div class="flex items-center gap-4">
+                <select id="langSelect" onchange="switchLanguage(this.value)" class="bg-slate-800 border border-slate-700 text-slate-200 text-xs font-semibold py-2 px-3 rounded-full outline-none focus:border-red-500 cursor-pointer">
+                    <option value="en">🌐 English</option>
+                    <option value="kn">🌐 ಕನ್ನಡ</option>
+                    <option value="hi">🌐 हिंदी</option>
+                    <option value="mr">🌐 मराठी</option>
+                </select>
+
+                <button id="menuBtn" onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 flex items-center justify-center">
+                    <i id="menuIcon" class="fa-solid fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Clean Mobile Menu -->
+        <div id="mobileMenu" class="hidden fixed inset-x-0 top-20 bg-[#0b0f19] border-b border-slate-800 p-6 space-y-4 shadow-2xl z-50 md:hidden">
+            <a href="#about" onclick="toggleMobileMenu()" data-i18n="navAbout" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">About</a>
+            <a href="#services" onclick="toggleMobileMenu()" data-i18n="navServices" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">Services</a>
+            <a href="#physician" onclick="toggleMobileMenu()" data-i18n="navDoctor" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">Doctor</a>
+            <a href="#facilities" onclick="toggleMobileMenu()" data-i18n="navFacilities" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">Facilities</a>
+            <a href="#contact" onclick="toggleMobileMenu()" data-i18n="navContact" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">Contact</a>
+            <a href="tel:+916362517714" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-red-600/30">
+                <i class="fa-solid fa-phone"></i> <span data-i18n="btnCall">Call Hospital</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="max-w-6xl mx-auto px-5 pt-12 pb-16 md:py-24">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-7 space-y-6">
+                <div class="flex flex-wrap items-center gap-2 text-xs font-bold tracking-widest text-red-400 uppercase">
+                    <span data-i18n="tagCardiology">CARDIOLOGY</span>
+                    <span>•</span>
+                    <span data-i18n="tagLocation">BHALKI, KARNATAKA</span>
+                    <span>•</span>
+                    <span data-i18n="tagOpen">24x7 OPEN</span>
+                </div>
+
+                <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.15] text-white">
+                    <span data-i18n="heroTitlePart1">Every heartbeat deserves</span> <span class="text-red-500" data-i18n="heroTitlePart2">expert care.</span>
+                </h1>
+
+                <p data-i18n="heroDesc" class="text-slate-400 text-base md:text-lg max-w-xl font-normal leading-relaxed">
+                    Shedole Hospital brings advanced cardiac and emergency care to Bhalki — led by Dr. Gunderao B. Shedole, trusted by families across the region.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+                    <a href="tel:+916362517714" class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-4 rounded-full flex items-center justify-center gap-3 shadow-lg shadow-red-600/30 transition-all">
+                        <i class="fa-solid fa-phone"></i>
+                        <span data-i18n="btnCall">Call the Hospital</span>
+                    </a>
+                    <a href="https://maps.google.com/maps?q=Shedole+Hospital,+Bhalki,+Karnataka" target="_blank" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold px-6 py-4 rounded-full flex items-center justify-center gap-3 transition-all">
+                        <i class="fa-solid fa-location-arrow text-red-400"></i>
+                        <span data-i18n="btnDirections">Find Directions</span>
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-2 pt-4 text-slate-400 text-sm">
+                    <div class="flex text-amber-400 text-xs">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                    </div>
+                    <span class="font-bold text-slate-200">4.4</span> <span data-i18n="ratingText">Rated by patients in Bhalki</span>
+                </div>
+            </div>
+
+            <!-- Doctor Main Photo (Hero) -->
+            <div class="lg:col-span-5 relative">
+                <div class="relative rounded-3xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-900 group">
+                    <img id="imgDoctorHero" src="./doctor.jpg.jpg" alt="Dr. Gunderao B. Shedole" class="w-full h-[450px] object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute bottom-6 right-6 bg-red-600/95 backdrop-blur-md text-white p-4 rounded-2xl shadow-xl flex flex-col items-center border border-red-400/30">
+                        <span class="text-2xl font-black">24/7</span>
+                        <span class="text-[10px] font-bold uppercase tracking-wider" data-i18n="badgeEmergency">Emergency Open</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Who We Are -->
+    <section id="about" class="max-w-6xl mx-auto px-5 py-20 border-t border-slate-800/80">
+        <div class="text-xs font-bold uppercase tracking-widest text-red-500 mb-2" data-i18n="secAboutTag">WHO WE ARE</div>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white max-w-2xl leading-tight" data-i18n="secAboutTitle">
+            A hospital built on trust, run around the clock.
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+            <div class="bg-slate-900/60 border border-slate-800 p-8 rounded-2xl">
+                <span class="text-3xl font-black text-red-500/40 block mb-4">01</span>
+                <h3 class="text-xl font-bold text-white mb-2" data-i18n="card1Title">Rooted in Bhalki</h3>
+                <p class="text-slate-400 text-sm leading-relaxed" data-i18n="card1Desc">
+                    For years, Shedole Hospital has served the people of Bhalki and nearby villages with dependable, compassionate medical care.
+                </p>
+            </div>
+            <div class="bg-slate-900/60 border border-slate-800 p-8 rounded-2xl">
+                <span class="text-3xl font-black text-red-500/40 block mb-4">02</span>
+                <h3 class="text-xl font-bold text-white mb-2" data-i18n="card2Title">Heart Specialists</h3>
+                <p class="text-slate-400 text-sm leading-relaxed" data-i18n="card2Desc">
+                    Our focus is cardiology — diagnosing and treating heart conditions with modern equipment and an experienced hand.
+                </p>
+            </div>
+            <div class="bg-slate-900/60 border border-slate-800 p-8 rounded-2xl">
+                <span class="text-3xl font-black text-red-500/40 block mb-4">03</span>
+                <h3 class="text-xl font-bold text-white mb-2" data-i18n="card3Title">Always Open</h3>
+                <p class="text-slate-400 text-sm leading-relaxed" data-i18n="card3Desc">
+                    Emergencies don't keep hours, and neither do we. Our doors and ICU stay open 24 hours, every day of the year.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="max-w-6xl mx-auto px-5 py-20 border-t border-slate-800/80">
+        <div class="text-xs font-bold uppercase tracking-widest text-red-500 mb-2" data-i18n="secServicesTag">WHAT WE DO</div>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-12" data-i18n="secServicesTitle">Complete care under one roof.</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
+                <div class="w-12 h-12 bg-red-500/10 text-red-500 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-heart-circle-check"></i></div>
+                <h3 class="text-lg font-bold text-white mb-1" data-i18n="srv1">Cardiac Care</h3>
+                <p class="text-slate-400 text-xs leading-relaxed" data-i18n="srv1Desc">Diagnosis and treatment of heart disease, hypertension and related conditions.</p>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
+                <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-bed-pulse"></i></div>
+                <h3 class="text-lg font-bold text-white mb-1" data-i18n="srv2">Emergency & ICU</h3>
+                <p class="text-slate-400 text-xs leading-relaxed" data-i18n="srv2Desc">Round-the-clock emergency response with a fully monitored intensive care unit.</p>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
+                <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-user-doctor"></i></div>
+                <h3 class="text-lg font-bold text-white mb-1" data-i18n="srv3">General Medicine</h3>
+                <p class="text-slate-400 text-xs leading-relaxed" data-i18n="srv3Desc">Consultation and treatment for everyday illnesses and chronic conditions.</p>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
+                <div class="w-12 h-12 bg-purple-500/10 text-purple-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-wave-square"></i></div>
+                <h3 class="text-lg font-bold text-white mb-1" data-i18n="srv4">Diagnostics & ECG</h3>
+                <p class="text-slate-400 text-xs leading-relaxed" data-i18n="srv4Desc">On-site ECG and diagnostic support for fast, accurate decisions.</p>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
+                <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-truck-medical"></i></div>
+                <h3 class="text-lg font-bold text-white mb-1" data-i18n="srv5">24x7 Ambulance</h3>
+                <p class="text-slate-400 text-xs leading-relaxed" data-i18n="srv5Desc">Rapid patient transport whenever and wherever it's needed.</p>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
+                <div class="w-12 h-12 bg-teal-500/10 text-teal-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-stethoscope"></i></div>
+                <h3 class="text-lg font-bold text-white mb-1" data-i18n="srv6">Health Check-ups</h3>
+                <p class="text-slate-400 text-xs leading-relaxed" data-i18n="srv6Desc">Preventive screening and routine check-ups for the whole family.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Physician Section -->
+    <section id="physician" class="max-w-6xl mx-auto px-5 py-20 border-t border-slate-800/80">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
+            <div class="md:col-span-7 space-y-4">
+                <div class="text-xs font-bold uppercase tracking-widest text-red-500" data-i18n="secPhysicianTag">THE PHYSICIAN</div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white">Dr. Gunderao B. Shedole</h2>
+                <p class="text-red-400 font-semibold text-base" data-i18n="physicianRole">Cardiologist & Chief Physician</p>
+                <p class="text-slate-300 text-sm leading-relaxed pt-2" data-i18n="physicianBio">
+                    Dr. Gunderao B. Shedole is a respected cardiologist serving Bhalki with dedication and skill. Patients know him for clear guidance, a steady hand in emergencies, and genuine care for every family that walks through the door.
+                </p>
+            </div>
+            <!-- Doctor Photo (Updated from Building) -->
+            <div class="md:col-span-5">
+                <div class="rounded-2xl overflow-hidden border border-slate-800 shadow-xl bg-slate-900">
+                    <img src="./doctor.jpg.jpg" alt="Dr. Gunderao B. Shedole" class="w-full h-72 object-cover object-top">
+                    <div class="p-4 bg-slate-900/90 text-xs text-slate-400 flex items-center gap-2">
+                        <i class="fa-solid fa-user-doctor text-red-400"></i> <span>Dr. Gunderao B. Shedole</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Facilities Gallery -->
+    <section id="facilities" class="max-w-6xl mx-auto px-5 py-20 border-t border-slate-800/80">
+        <div class="text-xs font-bold uppercase tracking-widest text-red-500 mb-2" data-i18n="secFacTag">INSIDE THE HOSPITAL</div>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-2" data-i18n="secFacTitle">Clean, calm and ready — day and night.</h2>
+        <p class="text-slate-400 text-sm mb-10" data-i18n="secFacSub">A look inside Shedole Hospital, Bhalki.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Medical Store -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+                <img src="./hospital_building.jpg.jpg" alt="Sanvi Medical Store Placeholder" class="w-full h-56 object-cover">
+                <div class="p-4 border-t border-slate-800/50">
+                    <h4 class="font-bold text-white text-sm" data-i18n="fac1Title">Sanvi Medical Store</h4>
+                    <p class="text-slate-400 text-xs mt-1" data-i18n="fac1Desc">On-site pharmacy attached for fast access to essential medicine.</p>
+                </div>
+            </div>
+            
+            <!-- ICU Ward -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+                <img src="./reception.jpg.jpg" alt="ICU Placeholder" class="w-full h-56 object-cover">
+                <div class="p-4 border-t border-slate-800/50">
+                    <h4 class="font-bold text-white text-sm" data-i18n="fac2Title">In-patient Ward & ICU</h4>
+                    <p class="text-slate-400 text-xs mt-1" data-i18n="fac2Desc">Monitored beds and intensive care setup for continuous observation.</p>
+                </div>
+            </div>
+            
+            <!-- Patient Care Area -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+                <img src="./reception.jpg.jpg" alt="Patient Waiting Area" class="w-full h-56 object-cover">
+                <div class="p-4 border-t border-slate-800/50">
+                    <h4 class="font-bold text-white text-sm" data-i18n="fac3Title">Patient Care Area</h4>
+                    <p class="text-slate-400 text-xs mt-1" data-i18n="fac3Desc">Welcoming reception and waiting area for patient families.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Live Map -->
+    <section id="contact" class="max-w-6xl mx-auto px-5 py-20 border-t border-slate-800/80">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div class="lg:col-span-5 space-y-6">
+                <div class="text-xs font-bold uppercase tracking-widest text-red-500" data-i18n="secContactTag">GET IN TOUCH</div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white" data-i18n="secContactTitle">Reach us anytime — we're always open.</h2>
+
+                <div class="space-y-4 pt-4">
+                    <div class="flex items-start gap-4 p-4 bg-slate-900/60 border border-slate-800 rounded-2xl">
+                        <div class="w-10 h-10 bg-red-500/10 text-red-500 rounded-xl flex items-center justify-center shrink-0 mt-1"><i class="fa-solid fa-location-dot"></i></div>
+                        <div>
+                            <span class="text-xs font-bold uppercase text-slate-400" data-i18n="lblAddress">Address</span>
+                            <p class="text-sm font-semibold text-white mt-0.5">Near New Water Tank, Housing Board Colony, Bhalki, Karnataka 585328</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 bg-slate-900/60 border border-slate-800 rounded-2xl">
+                        <div class="w-10 h-10 bg-red-500/10 text-red-500 rounded-xl flex items-center justify-center shrink-0 mt-1"><i class="fa-solid fa-phone"></i></div>
+                        <div>
+                            <span class="text-xs font-bold uppercase text-slate-400" data-i18n="lblPhone">Phone</span>
+                            <p class="text-sm font-semibold text-white mt-0.5">+91 63625 17714</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 bg-slate-900/60 border border-slate-800 rounded-2xl">
+                        <div class="w-10 h-10 bg-red-500/10 text-red-500 rounded-xl flex items-center justify-center shrink-0 mt-1"><i class="fa-solid fa-clock"></i></div>
+                        <div>
+                            <span class="text-xs font-bold uppercase text-slate-400" data-i18n="lblHours">Hours</span>
+                            <p class="text-sm font-semibold text-white mt-0.5" data-i18n="valHours">Open 24 Hours • All days</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7 bg-slate-900/80 border border-slate-800 p-8 rounded-3xl space-y-6">
+                
+                <!-- 100% Real Google Maps Embed -->
+                <div class="w-full h-52 rounded-2xl overflow-hidden border border-slate-700">
+                    <iframe 
+                        title="Shedole Hospital Location Map"
+                        src="https://maps.google.com/maps?q=Shedole%20Hospital,%20Bhalki&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                        class="w-full h-full border-0" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                    </iframe>
+                </div>
+
+                <form onsubmit="event.preventDefault(); alert('Message sent successfully!');" class="space-y-4">
+                    <input type="text" placeholder="Your Name" required class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-red-500">
+                    <input type="tel" placeholder="Phone Number" required class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-red-500">
+                    <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-red-600/30 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> <span data-i18n="btnSendMessage">Send Message</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 py-8 bg-slate-950 text-center text-xs text-slate-500">
+        <p>© 2026 Shedole Hospital, Bhalki. All rights reserved.</p>
+    </footer>
+
+    <!-- Full Site i18n Translation Engine -->
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('menuIcon');
+            menu.classList.toggle('hidden');
+            icon.className = menu.classList.contains('hidden') ? "fa-solid fa-bars text-lg" : "fa-solid fa-xmark text-lg";
+        }
+
+        const dictionary = {
+            en: {
+                navAbout: "About", navServices: "Services", navDoctor: "Doctor", navFacilities: "Facilities", navContact: "Contact",
+                tagCardiology: "CARDIOLOGY", tagLocation: "BHALKI, KARNATAKA", tagOpen: "24x7 OPEN",
+                heroTitlePart1: "Every heartbeat deserves", heroTitlePart2: "expert care.",
+                heroDesc: "Shedole Hospital brings advanced cardiac and emergency care to Bhalki — led by Dr. Gunderao B. Shedole, trusted by families across the region.",
+                btnCall: "Call the Hospital", btnDirections: "Find Directions", ratingText: "Rated by patients in Bhalki", badgeEmergency: "Emergency Open",
+                secAboutTag: "WHO WE ARE", secAboutTitle: "A hospital built on trust, run around the clock.",
+                card1Title: "Rooted in Bhalki", card1Desc: "For years, Shedole Hospital has served the people of Bhalki and nearby villages with dependable, compassionate medical care.",
+                card2Title: "Heart Specialists", card2Desc: "Our focus is cardiology — diagnosing and treating heart conditions with modern equipment and an experienced hand.",
+                card3Title: "Always Open", card3Desc: "Emergencies don't keep hours, and neither do we. Our doors and ICU stay open 24 hours, every day of the year.",
+                secServicesTag: "WHAT WE DO", secServicesTitle: "Complete care under one roof.",
+                srv1: "Cardiac Care", srv1Desc: "Diagnosis and treatment of heart disease, hypertension and related conditions.",
+                srv2: "Emergency & ICU", srv2Desc: "Round-the-clock emergency response with a fully monitored intensive care unit.",
+                srv3: "General Medicine", srv3Desc: "Consultation and treatment for everyday illnesses and chronic conditions.",
+                srv4: "Diagnostics & ECG", srv4Desc: "On-site ECG and diagnostic support for fast, accurate decisions.",
+                srv5: "24x7 Ambulance", srv5Desc: "Rapid patient transport whenever and wherever it's needed.",
+                srv6: "Health Check-ups", srv6Desc: "Preventive screening and routine check-ups for the whole family.",
+                secPhysicianTag: "THE PHYSICIAN", physicianRole: "Cardiologist & Chief Physician",
+                physicianBio: "Dr. Gunderao B. Shedole is a respected cardiologist serving Bhalki with dedication and skill. Patients know him for clear guidance, a steady hand in emergencies, and genuine care for every family that walks through the door.",
+                hospitalFrontCaption: "Shedole Hospital Building, Bhalki",
+                secFacTag: "INSIDE THE HOSPITAL", secFacTitle: "Clean, calm and ready — day and night.", secFacSub: "A look inside Shedole Hospital, Bhalki.",
+                fac1Title: "Sanvi Medical Store", fac1Desc: "On-site pharmacy attached for fast access to essential medicine.",
+                fac2Title: "In-patient Ward & ICU", fac2Desc: "Monitored beds and intensive care setup for continuous observation.",
+                fac3Title: "Patient Care Area", fac3Desc: "Welcoming reception and waiting area for patient families.",
+                secContactTag: "GET IN TOUCH", secContactTitle: "Reach us anytime — we're always open.",
+                lblAddress: "Address", lblPhone: "Phone", lblHours: "Hours", valHours: "Open 24 Hours • All days", btnSendMessage: "Send Message"
+            },
+            kn: {
+                navAbout: "ನಮ್ಮ ಬಗ್ಗೆ", navServices: "ಸೇವೆಗಳು", navDoctor: "ವೈದ್ಯರು", navFacilities: "ಸೌಲಭ್ಯಗಳು", navContact: "ಸಂಪರ್ಕಿಸಿ",
+                tagCardiology: "ಹೃದ್ರೋಗ ವಿಭಾಗ", tagLocation: "ಭಾಲ್ಕಿ, ಕರ್ನಾಟಕ", tagOpen: "24x7 ತೆರೆದಿರುತ್ತದೆ",
+                heroTitlePart1: "ಪ್ರತಿಯೊಂದು ಹೃದಯಬಡಿತಕ್ಕೂ", heroTitlePart2: "ಉತ್ತಮ ಚಿಕಿತ್ಸೆ ಬೇಕು.",
+                heroDesc: "ಶೇಡೋಳೆ ಆಸ್ಪತ್ರೆಯು ಭಾಲ್ಕಿಯಲ್ಲಿ ಸುಧಾರಿತ ಹೃದಯ ಮತ್ತು ತುರ್ತು ಚಿಕಿತ್ಸೆಯನ್ನು ಒದಗಿಸುತ್ತದೆ — ಡಾ. ಗುಂಡೇರಾವ್ ಬಿ. ಶೇಡೋಳೆ ಅವರ ನೇತೃತ್ವದಲ್ಲಿ.",
+                btnCall: "ಆಸ್ಪತ್ರೆಗೆ ಕರೆ ಮಾಡಿ", btnDirections: "ದಾರಿ ವೀಕ್ಷಿಸಿ", ratingText: "ಭಾಲ್ಕಿಯ ರೋಗಿಗಳಿಂದ ಉತ್ತಮ ಶ್ರೇಯಾಂಕ", badgeEmergency: "ತುರ್ತು ಸೇವೆ ಲಭ್ಯ",
+                secAboutTag: "ನಾವು ಯಾರು", secAboutTitle: "ನಂಬಿಕೆಯ ಮೇಲೆ ನಿರ್ಮಿತವಾದ, 24 ಗಂಟೆಯೂ ಕಾರ್ಯಾಚರಿಸುವ ಆಸ್ಪತ್ರೆ.",
+                card1Title: "ಭಾಲ್ಕಿಯಲ್ಲಿ ನಂಬಿಕಸ್ಥ ಸೇವೆ", card1Desc: "ವರ್ಷಗಳಿಂದ ಶೇಡೋಳೆ ಆಸ್ಪತ್ರೆಯು ಭಾಲ್ಕಿ ಮತ್ತು ಸುತ್ತಮುತ್ತಲಿನ ಗ್ರಾಮಗಳ ಜನರಿಗೆ ನಂಬಿಕಸ್ಥ ಆರೋಗ್ಯ ಸೇವೆ ನೀಡುತ್ತಿದೆ.",
+                card2Title: "ಹೃದ್ರೋಗ ತಜ್ಞರು", card2Desc: "ಆಧುನಿಕ ಉಪಕರಣಗಳೊಂದಿಗೆ ಹೃದಯ ಸಂಬಂಧಿ ಕಾಯಿಲೆಗಳ ನಿಖರ ತಪಾಸಣೆ ಮತ್ತು ಚಿಕಿತ್ಸೆ ನೀಡಲಾಗುತ್ತದೆ.",
+                card3Title: "ನಿರಂತರ ಸೇವೆ", card3Desc: "ತುರ್ತು ಪರಿಸ್ಥಿತಿಗಳಿಗೆ ಸಮಯದ ಮಿತಿಯಿಲ್ಲ. ನಮ್ಮ ಐಸಿಯು ಮತ್ತು ತುರ್ತು ವಿಭಾಗ 24 ಗಂಟೆಯೂ ತೆರೆದಿರುತ್ತದೆ.",
+                secServicesTag: "ನಮ್ಮ ಸೇವೆಗಳು", secServicesTitle: "ಒಂದೇ ಸೂರಿನಡಿ ಸಂಪೂರ್ಣ ವೈದ್ಯಕೀಯ ಆರೈಕೆ.",
+                srv1: "ಹೃದ್ರೋಗ ಚಿಕಿತ್ಸೆ", srv1Desc: "ಹೃದಯ ಕಾಯಿಲೆ, ಅಧಿಕ ರಕ್ತದೊತ್ತಡ ಮತ್ತು ಸಂಬಂಧಿತ ಸಮಸ್ಯೆಗಳಿಗೆ ಪರಿಣಾಮಕಾರಿ ಚಿಕಿತ್ಸೆ.",
+                srv2: "ತುರ್ತು ಚಿಕಿತ್ಸೆ & ICU", srv2Desc: "ಸಂಪೂರ್ಣ ಸುಸಜ್ಜಿತ ಐಸಿಯು ಜೊತೆಗೆ 24 ಗಂಟೆಗಳ ತುರ್ತು ವೈದ್ಯಕೀಯ ಪ್ರತಿಕ್ರಿಯೆ.",
+                srv3: "ಸಾಮಾನ್ಯ ವೈದ್ಯಕೀಯ ವಿಭಾಗ", srv3Desc: "ದೈನಂದಿನ ಅನಾರೋಗ್ಯ ಮತ್ತು ದೀರ್ಘಕಾಲದ ಕಾಯಿಲೆಗಳಿಗೆ ಸಂಪೂರ್ಣ ತಪಾಸಣೆ.",
+                srv4: "ECG ಮತ್ತು ರೋಗನಿರ್ಣಯ", srv4Desc: "ತ್ವರಿತ ನಿರ್ಧಾರಕ್ಕಾಗಿ ಆಸ್ಪತ್ರೆಯಲ್ಲೇ ಇಸಿಜಿ ಮತ್ತು ಲ್ಯಾಬ್ ಸೌಲಭ್ಯ.",
+                srv5: "24x7 ಆಂಬುಲೆನ್ಸ್", srv5Desc: "ಅಗತ್ಯವಿದ್ದಾಗ ತ್ವರಿತ ರೋಗಿ ಸಾಗಣೆ ಸೇವೆ.",
+                srv6: "ಆರೋಗ್ಯ ತಪಾಸಣೆ", srv6Desc: "ಇಡೀ ಕುಟುಂಬಕ್ಕೆ ನಿಯಮಿತ ಮತ್ತು ಮುನ್ನೆಚ್ಚರಿಕೆ ಆರೋಗ್ಯ ತಪಾಸಣೆ.",
+                secPhysicianTag: "ಮುಖ್ಯ ವೈದ್ಯರು", physicianRole: "ಹೃದ್ರೋಗ ತಜ್ಞರು & ಮುಖ್ಯ ವೈದ್ಯರು",
+                physicianBio: "ಡಾ. ಗುಂಡೇರಾವ್ ಬಿ. ಶೇಡೋಳೆ ಅವರು ಭಾಲ್ಕಿಯಲ್ಲಿ ಸುಪ್ರಸಿದ್ಧ ಹೃದ್ರೋಗ ತಜ್ಞರಾಗಿದ್ದಾರೆ. ಪ್ರತಿಯೊಬ್ಬ ರೋಗಿಗೂ ಸೂಕ್ತ ಮತ್ತು ಕಾಳಜಿಯುಕ್ತ ಚಿಕಿತ್ಸೆ ನೀಡುವುದು ಅವರ ಹೆಗ್ಗಳಿಕೆ.",
+                hospitalFrontCaption: "ಶೇಡೋಳೆ ಆಸ್ಪತ್ರೆ ಕಟ್ಟಡ, ಭಾಲ್ಕಿ",
+                secFacTag: "ಆಸ್ಪತ್ರೆಯ ಒಳನೋಟ", secFacTitle: "ನೈರ್ಮಲ್ಯ, ಶಾಂತತೆ ಮತ್ತು ಸುಸಜ್ಜಿತ ವಾತಾವರಣ.", secFacSub: "ಶೇಡೋಳೆ ಆಸ್ಪತ್ರೆಯ ಒಳಾಂಗಣ ಸೌಲಭ್ಯಗಳು.",
+                fac1Title: "ಸಾನ್ವಿ ಮೆಡಿಕಲ್ ಸ್ಟೋರ್", fac1Desc: "ಔಷಧಿಗಳ ತಕ್ಷಣದ ಲಭ್ಯತೆಗಾಗಿ ಆಸ್ಪತ್ರೆಯಲ್ಲೇ ಮೆಡಿಕಲ್ ಸ್ಟೋರ್.",
+                fac2Title: "ಒಳರೋಗಿ ವಿಭಾಗ & ICU", fac2Desc: "ನಿರಂತರ ಮೇಲ್ವಿಚಾರಣೆಗಾಗಿ ಅತ್ಯಾಧುನಿಕ ಬೆಡ್ ಸೌಲಭ್ಯ.",
+                fac3Title: "ರೋಗಿಗಳ ಕಾಯುವಿಕೆ ಕೊಠಡಿ", fac3Desc: "ರೋಗಿಗಳ ಕುಟುಂಬಸ್ಥರಿಗಾಗಿ ಆರಾಮದಾಯಕ ಕಾಯುವ ಸ್ಥಳ.",
+                secContactTag: "ಸಂಪರ್ಕಿಸಿ", secContactTitle: "ಯಾವಾಗ ಬೇಕಾದರೂ ಸಂಪರ್ಕಿಸಿ — 24 ಗಂಟೆಯೂ ಲಭ್ಯ.",
+                lblAddress: "ವಿಳಾಸ", lblPhone: "ಫೋನ್", lblHours: "ಸಮಯ", valHours: "24 ಗಂಟೆಯೂ ತೆರೆದಿರುತ್ತದೆ • ಪ್ರತಿದಿನ", btnSendMessage: "ಸಂದೇಶ ಕಳುಹಿಸಿ"
+            },
+            hi: {
+                navAbout: "हमारे बारे में", navServices: "सेवाएं", navDoctor: "डॉक्टर", navFacilities: "सुविधाएं", navContact: "संपर्क करें",
+                tagCardiology: "हृदय रोग विशेषज्ञ", tagLocation: "भालकी, कर्नाटक", tagOpen: "24x7 उपलब्ध",
+                heroTitlePart1: "हर धड़कन को चाहिए", heroTitlePart2: "विशेषज्ञ देखभाल।",
+                heroDesc: "शेडोळे अस्पताल भालकी में उन्नत हृदय और आपातकालीन देखभाल प्रदान करता है — डॉ. गुंडेराव बी. शेडोळे के नेतृत्व में।",
+                btnCall: "अस्पताल को कॉल करें", btnDirections: "दिशा-निर्देश देखें", ratingText: "भालकी के मरीजों द्वारा विश्वसनीय रेटिंग", badgeEmergency: "आपातकालीन सेवा चालू",
+                secAboutTag: "हम कौन हैं", secAboutTitle: "विश्वास पर आधारित, 24 घंटे सेवा में तत्पर अस्पताल।",
+                card1Title: "भालकी में स्थापित", card1Desc: "वर्षों से शेडोळे अस्पताल भालकी और आसपास के गांवों के लोगों को विश्वसनीय चिकित्सा सेवाएं प्रदान कर रहा है।",
+                card2Title: "हृदय रोग विशेषज्ञ", card2Desc: "हमारा मुख्य ध्यान आधुनिक उपकरणों के साथ हृदय संबंधी बीमारियों का सटीक उपचार करने पर है।",
+                card3Title: "सदैव उपलब्ध", card3Desc: "आपात स्थिति समय देखकर नहीं आती। हमारा आईसीयू और इमरजेंसी 24 घंटे खुला रहता है।",
+                secServicesTag: "हमारी सेवाएं", secServicesTitle: "एक ही छत के नीचे संपूर्ण इलाज।",
+                srv1: "कार्डियक केयर", srv1Desc: "हृदय रोग, उच्च रक्तचाप और संबंधित समस्याओं का प्रभावी निदान और उपचार।",
+                srv2: "इमरजेंसी और ICU", srv2Desc: "पूरी तरह से मॉनिटर की गई आईसीयू यूनिट के साथ 24 घंटे आपातकालीन सेवा।",
+                srv3: "जनरल मेडिसिन", srv3Desc: "सामान्य बीमारियों और पुरानी स्वास्थ्य समस्याओं का परामर्श और इलाज।",
+                srv4: "ईसीजी और डायग्नोस्टिक्स", srv4Desc: "त्वरित और सटीक निर्णयों के लिए ऑन-साइट ईसीजी और लैब सहायता।",
+                srv5: "24x7 एम्बुलेंस", srv5Desc: "आवश्यकता पड़ने पर मरीजों के लिए त्वरित एम्बुलेंस परिवहन सेवा।",
+                srv6: "स्वास्थ्य जांच", srv6Desc: "पूरे परिवार के लिए नियमित और निवारक स्वास्थ्य जांच सुविधा।",
+                secPhysicianTag: "मुख्य चिकित्सक", physicianRole: "हृदय रोग विशेषज्ञ और मुख्य चिकित्सक",
+                physicianBio: "डॉ. गुंडेराव बी. शेडोळे भालकी में समर्पित और कुशल हृदय रोग विशेषज्ञ के रूप में जाने जाते हैं। मरीज आपात स्थिति में उनके सटीक निर्णय और देखभाल पर भरोसा करते हैं।",
+                hospitalFrontCaption: "शेडोळे अस्पताल भवन, भालकी",
+                secFacTag: "अस्पताल की झलक", secFacTitle: "स्वच्छ, शांत और हर समय तैयार वातावरण।", secFacSub: "शेडोळे अस्पताल भालकी का आंतरिक दृश्य।",
+                fac1Title: "सान्वी मेडिकल स्टोर", fac1Desc: "दवाइयों की त्वरित उपलब्धता के लिए अस्पताल में ही मेडिकल स्टोर।",
+                fac2Title: "इन-पेशेंट वार्ड और ICU", fac2Desc: "मरीजों की निरंतर निगरानी के लिए सुसज्जित बेड और आईसीयू सुविधा।",
+                fac3Title: "मरीज देखभाल क्षेत्र", fac3Desc: "मरीजों के परिजनों के लिए स्वच्छ और आरामदायक प्रतीक्षा क्षेत्र।",
+                secContactTag: "संपर्क करें", secContactTitle: "किसी भी समय संपर्क करें — हम 24 घंटे उपलब्ध हैं।",
+                lblAddress: "पता", lblPhone: "फोन", lblHours: "समय", valHours: "24 घंटे खुला रहता है • सभी दिन", btnSendMessage: "संदेश भेजें"
+            },
+            mr: {
+                navAbout: "आमच्याबद्दल", navServices: "सेवा", navDoctor: "डॉक्टर", navFacilities: "सुविधा", navContact: "संपर्क",
+                tagCardiology: "हृदयरोग विभाग", tagLocation: "भालकी, कर्नाटक", tagOpen: "24x7 उघडे",
+                heroTitlePart1: "प्रत्येक धडधड पात्र आहे", heroTitlePart2: "तज्ज्ञ काळजीची.",
+                heroDesc: "शेडोळे हॉस्पिटल भालकीत प्रगत हृदय व आपत्कालीन काळजी आणते — डॉ. गुंडेराव बी. शेडोळे यांच्या नेतृत्वात.",
+                btnCall: "हॉस्पिटलला कॉल करा", btnDirections: "दिशा पहा", ratingText: "भालकीतील रुग्णांकडून ४.४ रेटिंग", badgeEmergency: "आपत्कालीन सेवा सुरू",
+                secAboutTag: "आम्ही कोण आहोत", secAboutTitle: "विश्वासावर उभे, २४ तास चालणारे रुग्णालय.",
+                card1Title: "भालकीत रुजलेले", card1Desc: "अनेक वर्षांपासून शेडोळे हॉस्पिटल भालकी व आसपासच्या गावांतील लोकांना विश्वासाने वैद्यकीय सेवा देत आहे.",
+                card2Title: "हृदय तज्ज्ञ", card2Desc: "आमचा भर ह्दयरोग उपचारावर आहे — आधुनिक उपकरणे आणि अनुभवी हातांनी योग्य उपचार.",
+                card3Title: "नेहमी उघडे", card3Desc: "आणीबाणी वेळ बघून येत नाही. आमचा आयसीयू व आपत्कालीन विभाग २४ तास उघडा असतो.",
+                secServicesTag: "आमच्या सेवा", secServicesTitle: "एकाच छताखाली पूर्ण काळजी.",
+                srv1: "हृदयरोग काळजी", srv1Desc: "हृदयरोग, उच्च रक्तदाब आणि संबंधित आजारांचे निदान व उपचार.",
+                srv2: "आपत्कालीन & ICU", srv2Desc: "पूर्णपणे मॉनिटर केलेल्या आयसीयू युनिटसह २४ तास आपत्कालीन प्रतिसाद.",
+                srv3: "जनरल मेडिसिन", srv3Desc: "रोजच्या आजारांवर आणि जुनाट आजारांवर सल्ला आणि उपचार.",
+                srv4: "डायग्नोस्टिक्स & ECG", srv4Desc: "जलद व अचूक निर्णयासाठी हॉस्पिटलमध्येच ईसीजी सुविधा.",
+                srv5: "24x7 रुग्णवाहिका", srv5Desc: "जेव्हा व जिथे गरज असेल तेव्हा जलद रुग्ण वाहतूक.",
+                srv6: "आरोग्य तपासणी", srv6Desc: "संपूर्ण कुटुंबासाठी प्रतिबंधात्मक व नियमित आरोग्य तपासणी.",
+                secPhysicianTag: "मुख्य डॉक्टर", physicianRole: "हृदयरोग तज्ज्ञ व मुख्य डॉक्टर",
+                physicianBio: "डॉ. गुंडेराव बी. शेडोळे हे भालकीतील प्रतिष्ठित ह्दयरोग तज्ज्ञ आहेत. आणीबाणीच्या वेळी योग्य मार्गदर्शन आणि उपचारांसाठी रुग्ण त्यांच्यावर विश्वास ठेवतात.",
+                hospitalFrontCaption: "शेडोळे हॉस्पिटल इमारत, भालकी",
+                secFacTag: "हॉस्पिटलच्या आत", secFacTitle: "स्वच्छ, शांत आणि २४ तास सज्ज.", secFacSub: "शेडोळे हॉस्पिटल, भालकीची एक झलक.",
+                fac1Title: "सान्fully मेडिकल स्टोअर", fac1Desc: "औषधांच्या तत्काळ उपलब्धतेसाठी हॉस्पिटलमध्येच मेडिकल स्टोअर.",
+                fac2Title: "इन-पेशंट वॉर्ड व ICU", fac2Desc: "सतत निरीक्षणासाठी सुसज्जित बेड व आयसीयू युनिट.",
+                fac3Title: "रुग्ण प्रतीक्षा क्षेत्र", fac3Desc: "रुग्णांच्या नातेवाईकांसाठी आरामदायक प्रतीक्षा कक्ष.",
+                secContactTag: "संपर्क साधा", secContactTitle: "कधीही संपर्क साधा — आम्ही नेहमी उघडे असतो.",
+                lblAddress: "पत्ता", lblPhone: "फोन", lblHours: "वेळ", valHours: "२४ तास उघडे • सर्व दिवस", btnSendMessage: "संदेश पाठवा"
+            }
+        };
+
+        function switchLanguage(lang) {
+            const data = dictionary[lang] || dictionary.en;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (data[key]) {
+                    el.innerText = data[key];
+                }
+            });
+        }
+    </script>
+</body>
+</html>
