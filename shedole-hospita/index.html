@@ -11,71 +11,55 @@
 
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .glass-nav {
-            background: rgba(11, 15, 25, 0.9);
-            backdrop-filter: blur(12px);
-        }
-        /* Mobile Scroll & Pop-out Styles */
+        .glass-nav { background: rgba(11, 15, 25, 0.9); backdrop-filter: blur(12px); }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Pop-out Effect for mobile */
         .swipe-card { transition: all 0.4s ease; }
         .swipe-card.active { transform: scale(1); opacity: 1; border-color: #ef4444; box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.2); }
         .swipe-card.inactive { transform: scale(0.92); opacity: 0.6; }
         
         /* Ticker Animation Fix */
-        @keyframes marquee { 
-            0% { transform: translateX(100vw); } 
-            100% { transform: translateX(-100%); } 
-        }
-        .animate-marquee { 
-            display: inline-block; 
-            white-space: nowrap; 
-            animation: marquee 20s linear infinite; 
-            padding-left: 100%;
-        }
+        @keyframes marquee { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+        .animate-marquee { display: inline-block; white-space: nowrap; animation: marquee 20s linear infinite; padding-left: 100%; }
         
         /* Live Dot Pulse */
-        @keyframes pulse-dot { 
-            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 
-            70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 
-            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } 
-        }
+        @keyframes pulse-dot { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
         .live-dot { animation: pulse-dot 2s infinite; }
         
         /* Background Floating Plus Icons */
-        @keyframes float-up {
-            0% { transform: translateY(100px) rotate(0deg) scale(0.8); opacity: 0; }
-            20% { opacity: 0.15; }
-            80% { opacity: 0.15; }
-            100% { transform: translateY(-300px) rotate(360deg) scale(1.2); opacity: 0; }
-        }
-        .bg-cross { 
-            position: absolute; 
-            color: rgba(239, 68, 68, 0.8); 
-            z-index: 0; 
-            animation: float-up 10s linear infinite; 
-        }
+        @keyframes float-up { 0% { transform: translateY(100px) rotate(0deg) scale(0.8); opacity: 0; } 20% { opacity: 0.15; } 80% { opacity: 0.15; } 100% { transform: translateY(-300px) rotate(360deg) scale(1.2); opacity: 0; } }
+        .bg-cross { position: absolute; color: rgba(239, 68, 68, 0.8); z-index: 0; animation: float-up 10s linear infinite; }
 
         #heart-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.6; }
+
+        /* 3D FLIP CARD CSS */
+        .flip-card { perspective: 1000px; height: 410px; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 1rem; overflow: hidden; }
+        .flip-card-front { background-color: #0f172a; border: 1px solid #1e293b; display: flex; flex-direction: column; }
+        .flip-card-back { background-color: #0b0f19; border: 1px solid #334155; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; padding: 1.5rem; }
+        
+        /* Modal Animation */
+        #imageModal { transition: opacity 0.3s ease; }
     </style>
 </head>
 <body class="bg-[#0b0f19] text-slate-100 antialiased selection:bg-red-500 selection:text-white">
 
     <div class="bg-red-600 border-b border-red-700 text-white text-[11px] font-bold py-2.5 overflow-hidden whitespace-nowrap">
         <div class="animate-marquee tracking-wider">
-            🚨 24/7 EMERGENCY & VENTILATOR FACILITY AVAILABLE &nbsp; • &nbsp; 🫀 ADVANCED ECG, 2D ECHO & TMT TESTING &nbsp; • &nbsp; 🚑 COMPLETE CARE FOR ROAD TRAFFIC ACCIDENTS &nbsp; • &nbsp; 🧠 NEUROLOGIST DR. MANISH VISITING 1ST THURSDAY &nbsp; • &nbsp; 🌿 FREE PILES & PANCHAKARMA CAMP &nbsp; • &nbsp; 
+            🚨 24/7 EMERGENCY & VENTILATOR FACILITY AVAILABLE   •   🫀 ADVANCED ECG, 2D ECHO & TMT TESTING   •   🚑 COMPLETE CARE FOR ROAD TRAFFIC ACCIDENTS   •   🧠 NEUROLOGIST DR. MANISH VISITING 1ST THURSDAY   •   🌿 FREE PILES & PANCHAKARMA CAMP   •   
         </div>
     </div>
 
     <header class="sticky top-0 z-50 glass-nav border-b border-slate-800/80">
         <div class="max-w-6xl mx-auto px-5 h-20 flex items-center justify-between">
             <a href="#" class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg shadow-red-600/30">
-                    <i class="fa-solid fa-heart-pulse"></i>
-                </div>
+                <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg shadow-red-600/30"><i class="fa-solid fa-heart-pulse"></i></div>
                 <span class="text-2xl font-bold tracking-tight text-white">Shedole<span class="text-red-500">.</span></span>
             </a>
-
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
                 <a href="#treatments" data-i18n="navServices" class="hover:text-white transition-colors">Treatments</a>
                 <a href="#physician" data-i18n="navDoctor" class="hover:text-white transition-colors">Doctor</a>
@@ -83,70 +67,48 @@
                 <a href="#facilities" data-i18n="navFacilities" class="hover:text-white transition-colors">Facilities</a>
                 <a href="#contact" data-i18n="navContact" class="hover:text-white transition-colors">Contact</a>
             </nav>
-
             <div class="flex items-center gap-4">
                 <select id="langSelect" onchange="switchLanguage(this.value)" class="bg-slate-800 border border-slate-700 text-slate-200 text-xs font-semibold py-2 px-3 rounded-full outline-none focus:border-red-500 cursor-pointer">
-                    <option value="en">🌐 English</option>
-                    <option value="kn">🌐 ಕನ್ನಡ</option>
-                    <option value="hi">🌐 हिंदी</option>
-                    <option value="mr">🌐 मराठी</option>
+                    <option value="en">🌐 English</option><option value="kn">🌐 ಕನ್ನಡ</option><option value="hi">🌐 हिंदी</option><option value="mr">🌐 मराठी</option>
                 </select>
-
                 <button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 flex items-center justify-center">
                     <i id="menuIcon" class="fa-solid fa-bars text-lg"></i>
                 </button>
             </div>
         </div>
-
         <div id="mobileMenu" class="hidden fixed inset-x-0 top-[114px] bg-[#0b0f19] border-b border-slate-800 p-6 space-y-4 shadow-2xl z-50 md:hidden">
             <a href="#treatments" onclick="toggleMobileMenu()" data-i18n="navServices" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">Treatments</a>
             <a href="#physician" onclick="toggleMobileMenu()" data-i18n="navDoctor" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">Doctor</a>
             <a href="#specialists" onclick="toggleMobileMenu()" data-i18n="navSpecialists" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">Specialists</a>
             <a href="#facilities" onclick="toggleMobileMenu()" data-i18n="navFacilities" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">Facilities</a>
             <a href="#contact" onclick="toggleMobileMenu()" data-i18n="navContact" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">Contact</a>
-            <a href="tel:+916362517714" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 mt-4">
-                <i class="fa-solid fa-phone"></i> <span data-i18n="btnCall">Call Hospital</span>
-            </a>
         </div>
     </header>
 
     <section class="relative max-w-6xl mx-auto px-5 pt-12 pb-16 md:py-24 overflow-hidden">
-        <canvas id="heart-canvas"></canvas> <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+        <canvas id="heart-canvas"></canvas>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
             <div class="lg:col-span-7 space-y-6">
                 <div class="flex flex-wrap items-center gap-2 text-xs font-bold tracking-widest text-red-400 uppercase">
-                    <span data-i18n="tagCardiology">CARDIOLOGY</span>
-                    <span>•</span>
-                    <span data-i18n="tagLocation">BHALKI, KARNATAKA</span>
-                    <span>•</span>
+                    <span data-i18n="tagCardiology">CARDIOLOGY</span><span>•</span><span data-i18n="tagLocation">BHALKI, KARNATAKA</span><span>•</span>
                     <span class="flex items-center gap-1.5 text-green-400"><div class="w-2 h-2 bg-green-500 rounded-full live-dot"></div> <span data-i18n="tagOpen">24x7 OPEN</span></span>
                 </div>
-
                 <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.15] text-white">
                     <span data-i18n="heroTitlePart1">Every heartbeat deserves</span> <span class="text-red-500" data-i18n="heroTitlePart2">expert care.</span>
                 </h1>
-
                 <p data-i18n="heroDesc" class="text-slate-400 text-base md:text-lg max-w-xl font-normal leading-relaxed">
                     Shedole Hospital brings advanced cardiac and emergency care to Bhalki — led by Dr. Gunderao B. Shedole, trusted by families across the region.
                 </p>
-
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-                    <a href="tel:+916362517714" class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-4 rounded-full flex items-center justify-center gap-3 shadow-lg shadow-red-600/30 transition-all">
-                        <i class="fa-solid fa-phone"></i>
-                        <span data-i18n="btnCall">Call the Hospital</span>
-                    </a>
-                    <a href="#contact" class="bg-slate-800/80 hover:bg-slate-700 backdrop-blur border border-slate-700 text-slate-200 font-semibold px-6 py-4 rounded-full flex items-center justify-center gap-3 transition-all">
-                        <i class="fa-solid fa-location-arrow text-red-400"></i>
-                        <span data-i18n="btnDirections">Find Directions</span>
-                    </a>
+                    <a href="tel:+916362517714" class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-4 rounded-full flex items-center justify-center gap-3 shadow-lg shadow-red-600/30"><i class="fa-solid fa-phone"></i><span data-i18n="btnCall">Call the Hospital</span></a>
+                    <a href="#contact" class="bg-slate-800/80 hover:bg-slate-700 backdrop-blur border border-slate-700 text-slate-200 font-semibold px-6 py-4 rounded-full flex items-center justify-center gap-3"><i class="fa-solid fa-location-arrow text-red-400"></i><span data-i18n="btnDirections">Find Directions</span></a>
                 </div>
             </div>
-
             <div class="lg:col-span-5 relative">
                 <div class="relative rounded-3xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-900 group">
                     <img src="./60605.jpg" alt="Dr. Gunderao B. Shedole" class="w-full h-[450px] object-cover object-top group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute bottom-6 right-6 bg-red-600/95 backdrop-blur-md text-white p-4 rounded-2xl shadow-xl flex flex-col items-center border border-red-400/30">
-                        <span class="text-2xl font-black">24/7</span>
-                        <span class="text-[10px] font-bold uppercase tracking-wider" data-i18n="badgeEmergency">Emergency Open</span>
+                        <span class="text-2xl font-black">24/7</span><span class="text-[10px] font-bold uppercase tracking-wider" data-i18n="badgeEmergency">Emergency Open</span>
                     </div>
                 </div>
             </div>
@@ -156,58 +118,31 @@
     <section id="treatments" class="max-w-6xl mx-auto px-5 py-20 border-t border-slate-800/80">
         <div class="text-xs font-bold uppercase tracking-widest text-red-500 mb-2" data-i18n="secServicesTag">WHAT WE TREAT</div>
         <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-12" data-i18n="secServicesTitle">Advanced facilities & complete care.</h2>
-
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl hover:border-red-500/50 transition">
                 <div class="w-12 h-12 bg-red-500/10 text-red-500 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-heart-pulse"></i></div>
                 <h3 class="text-lg font-bold text-white mb-3" data-i18n="trCardioTitle">Cardiac Care</h3>
-                <ul class="space-y-2 text-sm text-slate-400 font-medium">
-                    <li><i class="fa-solid fa-check text-red-500 mr-2 text-xs"></i> BP Management</li>
-                    <li><i class="fa-solid fa-check text-red-500 mr-2 text-xs"></i> Heart Attack Care</li>
-                    <li><i class="fa-solid fa-check text-red-500 mr-2 text-xs"></i> ECG & 2D ECHO</li>
-                    <li><i class="fa-solid fa-check text-red-500 mr-2 text-xs"></i> TMT Testing</li>
-                </ul>
+                <ul class="space-y-2 text-sm text-slate-400 font-medium"><li><i class="fa-solid fa-check text-red-500 mr-2 text-xs"></i> BP Management</li><li><i class="fa-solid fa-check text-red-500 mr-2 text-xs"></i> Heart Attack Care</li><li><i class="fa-solid fa-check text-red-500 mr-2 text-xs"></i> ECG & 2D ECHO</li><li><i class="fa-solid fa-check text-red-500 mr-2 text-xs"></i> TMT Testing</li></ul>
             </div>
-            
             <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl hover:border-blue-500/50 transition">
                 <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-truck-medical"></i></div>
                 <h3 class="text-lg font-bold text-white mb-3" data-i18n="trEmTitle">Emergency & ICU</h3>
-                <ul class="space-y-2 text-sm text-slate-400 font-medium">
-                    <li><i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> Road Traffic Accidents</li>
-                    <li><i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> 24/7 Ventilator Facility</li>
-                    <li><i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> Paralysis Stroke Care</li>
-                </ul>
+                <ul class="space-y-2 text-sm text-slate-400 font-medium"><li><i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> Road Traffic Accidents</li><li><i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> 24/7 Ventilator Facility</li><li><i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> Paralysis Stroke Care</li></ul>
             </div>
-
             <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl hover:border-emerald-500/50 transition">
                 <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-scalpel"></i></div>
                 <h3 class="text-lg font-bold text-white mb-3" data-i18n="trSurgTitle">Surgery & Procedures</h3>
-                <ul class="space-y-2 text-sm text-slate-400 font-medium">
-                    <li><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> Appendix & Hernia</li>
-                    <li><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> Hydrocele</li>
-                    <li><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> Piles, Fissure & Fistula</li>
-                </ul>
+                <ul class="space-y-2 text-sm text-slate-400 font-medium"><li><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> Appendix & Hernia</li><li><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> Hydrocele</li><li><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> Piles, Fissure & Fistula</li></ul>
             </div>
-
             <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl hover:border-amber-500/50 transition">
                 <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-stethoscope"></i></div>
                 <h3 class="text-lg font-bold text-white mb-3" data-i18n="trMedTitle">General Medicine</h3>
-                <ul class="space-y-2 text-sm text-slate-400 font-medium">
-                    <li><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> Sugar (Diabetes)</li>
-                    <li><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> Thyroid & Asthma</li>
-                    <li><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> Alcoholic Liver Disease</li>
-                    <li><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> Viral Fever</li>
-                </ul>
+                <ul class="space-y-2 text-sm text-slate-400 font-medium"><li><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> Sugar (Diabetes)</li><li><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> Thyroid & Asthma</li><li><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> Alcoholic Liver Disease</li><li><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> Viral Fever</li></ul>
             </div>
-
             <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl hover:border-purple-500/50 transition">
                 <div class="w-12 h-12 bg-purple-500/10 text-purple-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-person-walking"></i></div>
                 <h3 class="text-lg font-bold text-white mb-3" data-i18n="trRehabTitle">Rehabilitation</h3>
-                <ul class="space-y-2 text-sm text-slate-400 font-medium">
-                    <li><i class="fa-solid fa-check text-purple-500 mr-2 text-xs"></i> Physiotherapy</li>
-                    <li><i class="fa-solid fa-check text-purple-500 mr-2 text-xs"></i> Post-Surgery Rehab</li>
-                    <li><i class="fa-solid fa-check text-purple-500 mr-2 text-xs"></i> Panchakarma</li>
-                </ul>
+                <ul class="space-y-2 text-sm text-slate-400 font-medium"><li><i class="fa-solid fa-check text-purple-500 mr-2 text-xs"></i> Physiotherapy</li><li><i class="fa-solid fa-check text-purple-500 mr-2 text-xs"></i> Post-Surgery Rehab</li><li><i class="fa-solid fa-check text-purple-500 mr-2 text-xs"></i> Panchakarma</li></ul>
             </div>
         </div>
     </section>
@@ -219,7 +154,7 @@
                 <h2 class="text-3xl md:text-4xl font-extrabold text-white">Dr. Gunderao B. Shedole</h2>
                 <p class="text-red-400 font-semibold text-base" data-i18n="physicianRole">Cardiologist & Chief Physician</p>
                 <p class="text-slate-300 text-sm leading-relaxed pt-2" data-i18n="physicianBio">
-                    Dr. Gunderao B. Shedole is a respected cardiologist serving Bhalki with dedication and skill. Patients know him for clear guidance, a steady hand in emergencies, and genuine care for every family that walks through the door.
+                    Dr. Gunderao B. Shedole is a respected cardiologist serving Bhalki with dedication and skill. Patients know him for clear guidance, a steady hand in emergencies, and genuine care for every family.
                 </p>
             </div>
             <div class="md:col-span-5">
@@ -254,67 +189,137 @@
 
             <div class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-6 pb-8 px-2 md:px-0" id="specialist-scroll">
                 
-                <div class="swipe-card w-[80vw] md:w-[280px] shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden tilt-element">
-                    <img src="./60629.jpg" alt="Dr. Manish Kulkarni" class="w-full h-48 object-cover">
-                    <div class="p-5 flex flex-col h-[200px]">
-                        <h3 class="text-lg font-bold text-white" data-i18n="drManish">Dr. Manish Kulkarni</h3>
-                        <p class="text-blue-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specNeuro">MD, DM Neurologist</p>
-                        <p class="text-slate-400 text-xs mb-4 leading-relaxed" data-i18n="descNeuro">Stroke, Epilepsy, Migraine & EEG/NCS.</p>
-                        <div class="mt-auto flex items-center gap-2 bg-blue-600/10 text-blue-400 text-[10px] font-bold px-3 py-2 rounded-lg border border-blue-500/20">
-                            <div class="w-2 h-2 bg-blue-500 rounded-full live-dot"></div>
-                            <span data-i18n="visitNeuro">Visiting: 1st Thursday</span>
+                <div class="swipe-card flip-card w-[85vw] md:w-[280px] shrink-0 snap-center">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img src="./60629.jpg" alt="Dr. Manish Kulkarni" class="w-full h-48 object-cover object-top">
+                            <div class="p-5 flex flex-col flex-1 text-left">
+                                <h3 class="text-lg font-bold text-white" data-i18n="drManish">Dr. Manish Kulkarni</h3>
+                                <p class="text-blue-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specNeuro">MD, DM Neurologist</p>
+                                <div class="flex items-center gap-2 mb-4 bg-blue-600/10 text-blue-400 text-[10px] font-bold px-3 py-1.5 rounded-md border border-blue-500/20 w-max">
+                                    <div class="w-2 h-2 bg-blue-500 rounded-full live-dot"></div><span data-i18n="visitNeuro">Visiting: 1st Thursday</span>
+                                </div>
+                                <button onclick="toggleFlip(this)" class="mt-auto bg-slate-800 text-white font-semibold text-xs py-2.5 rounded-lg border border-slate-700 hover:bg-slate-700 transition w-full flex justify-center items-center gap-2">View Details <i class="fa-solid fa-rotate"></i></button>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <i class="fa-solid fa-brain text-3xl text-blue-400 mb-3"></i>
+                            <h3 class="text-lg font-bold text-white mb-2 border-b border-slate-700 pb-2">Top Highlights</h3>
+                            <ul class="text-slate-400 text-xs space-y-2 mb-6 text-left w-full pl-2">
+                                <li>✔️ Stroke & Paralysis Care</li>
+                                <li>✔️ Epilepsy & Spondylosis</li>
+                                <li>✔️ EEG & NCS Investigations</li>
+                            </ul>
+                            <button onclick="openModal('./60619.jpg')" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl w-full flex justify-center items-center gap-2 mb-3 shadow-lg shadow-red-600/30">🖼️ View Full Poster</button>
+                            <button onclick="toggleFlip(this)" class="text-slate-400 hover:text-white text-xs underline decoration-slate-600 mt-2">Back to Front</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="swipe-card w-[80vw] md:w-[280px] shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden tilt-element">
-                    <img src="./60626.jpg" alt="Dr. Shailesh Math" class="w-full h-48 object-cover">
-                    <div class="p-5 flex flex-col h-[200px]">
-                        <h3 class="text-lg font-bold text-white" data-i18n="drShailesh">Dr. Shailesh Math</h3>
-                        <p class="text-emerald-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specSurg">MS, FMAS Surgeon</p>
-                        <p class="text-slate-400 text-xs mb-4 leading-relaxed" data-i18n="descSurg">Advanced Laparoscopic, Hernia & General Surgery.</p>
-                        <div class="mt-auto flex items-center gap-2 bg-emerald-600/10 text-emerald-400 text-[10px] font-bold px-3 py-2 rounded-lg border border-emerald-500/20">
-                            <div class="w-2 h-2 bg-emerald-500 rounded-full live-dot"></div>
-                            <span data-i18n="visitSurg">Visiting Consultant</span>
+                <div class="swipe-card flip-card w-[85vw] md:w-[280px] shrink-0 snap-center">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img src="./60626.jpg" alt="Dr. Shailesh Math" class="w-full h-48 object-cover object-top">
+                            <div class="p-5 flex flex-col flex-1 text-left">
+                                <h3 class="text-lg font-bold text-white" data-i18n="drShailesh">Dr. Shailesh Math</h3>
+                                <p class="text-emerald-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specSurg">MS, FMAS Surgeon</p>
+                                <div class="flex items-center gap-2 mb-4 bg-emerald-600/10 text-emerald-400 text-[10px] font-bold px-3 py-1.5 rounded-md border border-emerald-500/20 w-max">
+                                    <div class="w-2 h-2 bg-emerald-500 rounded-full live-dot"></div><span data-i18n="visitSurg">Visiting Consultant</span>
+                                </div>
+                                <button onclick="toggleFlip(this)" class="mt-auto bg-slate-800 text-white font-semibold text-xs py-2.5 rounded-lg border border-slate-700 hover:bg-slate-700 transition w-full flex justify-center items-center gap-2">View Details <i class="fa-solid fa-rotate"></i></button>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <i class="fa-solid fa-scalpel text-3xl text-emerald-400 mb-3"></i>
+                            <h3 class="text-lg font-bold text-white mb-2 border-b border-slate-700 pb-2">Top Highlights</h3>
+                            <ul class="text-slate-400 text-xs space-y-2 mb-6 text-left w-full pl-2">
+                                <li>✔️ Advance Laparoscopic</li>
+                                <li>✔️ Hernia & Gastro Surgeries</li>
+                                <li>✔️ Diabetic Foot Surgeries</li>
+                            </ul>
+                            <button onclick="openModal('./60626.jpg')" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl w-full flex justify-center items-center gap-2 mb-3 shadow-lg shadow-red-600/30">🖼️ View Full Poster</button>
+                            <button onclick="toggleFlip(this)" class="text-slate-400 hover:text-white text-xs underline decoration-slate-600 mt-2">Back to Front</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="swipe-card w-[80vw] md:w-[280px] shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden tilt-element">
-                    <img src="./60632.jpg" alt="Dr. Dinesh Annagiri" class="w-full h-48 object-cover object-top">
-                    <div class="p-5 flex flex-col h-[200px]">
-                        <h3 class="text-lg font-bold text-white" data-i18n="drDinesh">Dr. Dinesh Annagiri</h3>
-                        <p class="text-amber-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specPhysio">Consultant Physiotherapist</p>
-                        <p class="text-slate-400 text-xs mb-4 leading-relaxed" data-i18n="descPhysio">Cervical pain, back pain, sports injuries & rehab.</p>
-                        <div class="mt-auto flex items-center gap-2 bg-amber-600/10 text-amber-400 text-[10px] font-bold px-3 py-2 rounded-lg border border-amber-500/20">
-                            <div class="w-2 h-2 bg-amber-500 rounded-full live-dot"></div>
-                            <span data-i18n="visitPhysio">Mon-Sat (10 AM - 6 PM)</span>
+                <div class="swipe-card flip-card w-[85vw] md:w-[280px] shrink-0 snap-center">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img src="./60632.jpg" alt="Dr. Dinesh Annagiri" class="w-full h-48 object-cover object-top">
+                            <div class="p-5 flex flex-col flex-1 text-left">
+                                <h3 class="text-lg font-bold text-white" data-i18n="drDinesh">Dr. Dinesh Annagiri</h3>
+                                <p class="text-amber-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specPhysio">Consultant Physiotherapist</p>
+                                <div class="flex items-center gap-2 mb-4 bg-amber-600/10 text-amber-400 text-[10px] font-bold px-3 py-1.5 rounded-md border border-amber-500/20 w-max">
+                                    <div class="w-2 h-2 bg-amber-500 rounded-full live-dot"></div><span data-i18n="visitPhysio">Mon-Sat (10-6 PM)</span>
+                                </div>
+                                <button onclick="toggleFlip(this)" class="mt-auto bg-slate-800 text-white font-semibold text-xs py-2.5 rounded-lg border border-slate-700 hover:bg-slate-700 transition w-full flex justify-center items-center gap-2">View Details <i class="fa-solid fa-rotate"></i></button>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <i class="fa-solid fa-person-walking text-3xl text-amber-400 mb-3"></i>
+                            <h3 class="text-lg font-bold text-white mb-2 border-b border-slate-700 pb-2">Top Highlights</h3>
+                            <ul class="text-slate-400 text-xs space-y-2 mb-6 text-left w-full pl-2">
+                                <li>✔️ Cervical & Shoulder Pain</li>
+                                <li>✔️ Sciatica & Arthritis</li>
+                                <li>✔️ Home Visit Facility</li>
+                            </ul>
+                            <button onclick="openModal('./60634.jpg')" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl w-full flex justify-center items-center gap-2 mb-3 shadow-lg shadow-red-600/30">🖼️ View Full Poster</button>
+                            <button onclick="toggleFlip(this)" class="text-slate-400 hover:text-white text-xs underline decoration-slate-600 mt-2">Back to Front</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="swipe-card w-[80vw] md:w-[280px] shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden tilt-element">
-                    <img src="./dr_namrata.jpg" alt="Dr. Namrata Shedole" onerror="this.src='./60623.jpg'" class="w-full h-48 object-cover object-top">
-                    <div class="p-5 flex flex-col h-[200px]">
-                        <h3 class="text-lg font-bold text-white" data-i18n="drNamrata">Dr. Namrata Shedole</h3>
-                        <p class="text-purple-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specNamrata">B.A.M.S Specialist</p>
-                        <p class="text-slate-400 text-xs mb-4 leading-relaxed" data-i18n="descNamrata">Ladies Piles, Fissure, Fistula & Panchakarma.</p>
-                        <div class="mt-auto flex items-center gap-2 bg-purple-600/10 text-purple-400 text-[10px] font-bold px-3 py-2 rounded-lg border border-purple-500/20">
-                            <div class="w-2 h-2 bg-purple-500 rounded-full live-dot"></div>
-                            <span data-i18n="visitNamrata">In-House Expert</span>
+                <div class="swipe-card flip-card w-[85vw] md:w-[280px] shrink-0 snap-center">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img src="./dr_namrata.jpg" alt="Dr. Namrata Shedole" onerror="this.src='./60623.jpg'" class="w-full h-48 object-cover object-top">
+                            <div class="p-5 flex flex-col flex-1 text-left">
+                                <h3 class="text-lg font-bold text-white" data-i18n="drNamrata">Dr. Namrata Shedole</h3>
+                                <p class="text-purple-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specNamrata">B.A.M.S Specialist</p>
+                                <div class="flex items-center gap-2 mb-4 bg-purple-600/10 text-purple-400 text-[10px] font-bold px-3 py-1.5 rounded-md border border-purple-500/20 w-max">
+                                    <div class="w-2 h-2 bg-purple-500 rounded-full live-dot"></div><span data-i18n="visitNamrata">In-House Expert</span>
+                                </div>
+                                <button onclick="toggleFlip(this)" class="mt-auto bg-slate-800 text-white font-semibold text-xs py-2.5 rounded-lg border border-slate-700 hover:bg-slate-700 transition w-full flex justify-center items-center gap-2">View Details <i class="fa-solid fa-rotate"></i></button>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <i class="fa-solid fa-spa text-3xl text-purple-400 mb-3"></i>
+                            <h3 class="text-lg font-bold text-white mb-2 border-b border-slate-700 pb-2">Top Highlights</h3>
+                            <ul class="text-slate-400 text-xs space-y-2 mb-6 text-left w-full pl-2">
+                                <li>✔️ Ladies Piles Care</li>
+                                <li>✔️ Fissure & Fistula</li>
+                                <li>✔️ Specialist in Ksharsutra</li>
+                            </ul>
+                            <button onclick="openModal('./60623.jpg')" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl w-full flex justify-center items-center gap-2 mb-3 shadow-lg shadow-red-600/30">🖼️ View Full Poster</button>
+                            <button onclick="toggleFlip(this)" class="text-slate-400 hover:text-white text-xs underline decoration-slate-600 mt-2">Back to Front</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="swipe-card w-[80vw] md:w-[280px] shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden tilt-element">
-                    <img src="./dr_tanaji.jpg" alt="Dr. Tanaji Uchhe" onerror="this.src='./60623.jpg'" class="w-full h-48 object-cover object-top">
-                    <div class="p-5 flex flex-col h-[200px]">
-                        <h3 class="text-lg font-bold text-white" data-i18n="drTanaji">Dr. Tanaji Uchhe</h3>
-                        <p class="text-purple-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specTanaji">B.A.M.S, D.Y.A.</p>
-                        <p class="text-slate-400 text-xs mb-4 leading-relaxed" data-i18n="descTanaji">Piles, Fissure, Fistula & Panchakarma Expert.</p>
-                        <div class="mt-auto flex items-center gap-2 bg-purple-600/10 text-purple-400 text-[10px] font-bold px-3 py-2 rounded-lg border border-purple-500/20">
-                            <div class="w-2 h-2 bg-purple-500 rounded-full live-dot"></div>
-                            <span data-i18n="visitTanaji">In-House Expert</span>
+                <div class="swipe-card flip-card w-[85vw] md:w-[280px] shrink-0 snap-center">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img src="./dr_tanaji.jpg" alt="Dr. Tanaji Uchhe" onerror="this.src='./60623.jpg'" class="w-full h-48 object-cover object-top">
+                            <div class="p-5 flex flex-col flex-1 text-left">
+                                <h3 class="text-lg font-bold text-white" data-i18n="drTanaji">Dr. Tanaji Uchhe</h3>
+                                <p class="text-purple-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specTanaji">B.A.M.S, D.Y.A.</p>
+                                <div class="flex items-center gap-2 mb-4 bg-purple-600/10 text-purple-400 text-[10px] font-bold px-3 py-1.5 rounded-md border border-purple-500/20 w-max">
+                                    <div class="w-2 h-2 bg-purple-500 rounded-full live-dot"></div><span data-i18n="visitTanaji">In-House Expert</span>
+                                </div>
+                                <button onclick="toggleFlip(this)" class="mt-auto bg-slate-800 text-white font-semibold text-xs py-2.5 rounded-lg border border-slate-700 hover:bg-slate-700 transition w-full flex justify-center items-center gap-2">View Details <i class="fa-solid fa-rotate"></i></button>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <i class="fa-solid fa-hand-holding-medical text-3xl text-purple-400 mb-3"></i>
+                            <h3 class="text-lg font-bold text-white mb-2 border-b border-slate-700 pb-2">Top Highlights</h3>
+                            <ul class="text-slate-400 text-xs space-y-2 mb-6 text-left w-full pl-2">
+                                <li>✔️ Piles & Panchakarma</li>
+                                <li>✔️ Fissure & Fistula</li>
+                                <li>✔️ Specialist in Ksharsutra</li>
+                            </ul>
+                            <button onclick="openModal('./60623.jpg')" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl w-full flex justify-center items-center gap-2 mb-3 shadow-lg shadow-red-600/30">🖼️ View Full Poster</button>
+                            <button onclick="toggleFlip(this)" class="text-slate-400 hover:text-white text-xs underline decoration-slate-600 mt-2">Back to Front</button>
                         </div>
                     </div>
                 </div>
@@ -329,29 +334,21 @@
                 <div class="text-xs font-bold uppercase tracking-widest text-red-500 mb-2" data-i18n="secFacTag">INSIDE THE HOSPITAL</div>
                 <h2 class="text-3xl md:text-4xl font-extrabold text-white" data-i18n="secFacTitle">Clean, calm and ready.</h2>
             </div>
-            <div class="md:hidden flex items-center gap-2 text-slate-400 text-xs font-bold animate-pulse">
-                Swipe <i class="fa-solid fa-arrow-right"></i>
-            </div>
+            <div class="md:hidden flex items-center gap-2 text-slate-400 text-xs font-bold animate-pulse">Swipe <i class="fa-solid fa-arrow-right"></i></div>
         </div>
 
         <div class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-6 pb-6 px-2 md:px-0" id="facility-scroll">
-            <div class="swipe-card w-[85vw] md:w-1/3 shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden tilt-element">
+            <div class="swipe-card w-[85vw] md:w-1/3 shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
                 <img src="./60601.jpg" alt="Hospital Building" class="w-full h-56 object-cover">
-                <div class="p-4 border-t border-slate-800/50">
-                    <h4 class="font-bold text-white text-sm" data-i18n="fac1Title">Hospital Exterior & Campus</h4>
-                </div>
+                <div class="p-4 border-t border-slate-800/50"><h4 class="font-bold text-white text-sm" data-i18n="fac1Title">Hospital Exterior & Campus</h4></div>
             </div>
-            <div class="swipe-card w-[85vw] md:w-1/3 shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden tilt-element">
+            <div class="swipe-card w-[85vw] md:w-1/3 shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
                 <img src="./60599.jpg" alt="ICU Ward" class="w-full h-56 object-cover">
-                <div class="p-4 border-t border-slate-800/50">
-                    <h4 class="font-bold text-white text-sm" data-i18n="fac2Title">In-patient Ward & ICU</h4>
-                </div>
+                <div class="p-4 border-t border-slate-800/50"><h4 class="font-bold text-white text-sm" data-i18n="fac2Title">In-patient Ward & ICU</h4></div>
             </div>
-            <div class="swipe-card w-[85vw] md:w-1/3 shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden tilt-element">
+            <div class="swipe-card w-[85vw] md:w-1/3 shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
                 <img src="./60603.jpg" alt="Patient Waiting Area" class="w-full h-56 object-cover">
-                <div class="p-4 border-t border-slate-800/50">
-                    <h4 class="font-bold text-white text-sm" data-i18n="fac3Title">Patient Care Area</h4>
-                </div>
+                <div class="p-4 border-t border-slate-800/50"><h4 class="font-bold text-white text-sm" data-i18n="fac3Title">Patient Care Area</h4></div>
             </div>
         </div>
     </section>
@@ -364,23 +361,17 @@
                 <div class="space-y-4 pt-4">
                     <div class="flex items-start gap-4 p-4 bg-slate-900/60 border border-slate-800 rounded-2xl">
                         <div class="w-10 h-10 bg-red-500/10 text-red-500 rounded-xl flex items-center justify-center shrink-0 mt-1"><i class="fa-solid fa-location-dot"></i></div>
-                        <div>
-                            <span class="text-xs font-bold uppercase text-slate-400" data-i18n="lblAddress">Address</span>
-                            <p class="text-sm font-semibold text-white mt-0.5">Near New Water Tank, Housing Board Colony, Bhalki, Karnataka 585328</p>
-                        </div>
+                        <div><span class="text-xs font-bold uppercase text-slate-400" data-i18n="lblAddress">Address</span><p class="text-sm font-semibold text-white mt-0.5">Near New Water Tank, Housing Board Colony, Bhalki, Karnataka 585328</p></div>
                     </div>
                     <div class="flex items-start gap-4 p-4 bg-slate-900/60 border border-slate-800 rounded-2xl">
                         <div class="w-10 h-10 bg-red-500/10 text-red-500 rounded-xl flex items-center justify-center shrink-0 mt-1"><i class="fa-solid fa-phone"></i></div>
-                        <div>
-                            <span class="text-xs font-bold uppercase text-slate-400" data-i18n="lblPhone">Phone</span>
-                            <p class="text-sm font-semibold text-white mt-0.5">+91 63625 17714</p>
-                        </div>
+                        <div><span class="text-xs font-bold uppercase text-slate-400" data-i18n="lblPhone">Phone</span><p class="text-sm font-semibold text-white mt-0.5">+91 63625 17714</p></div>
                     </div>
                 </div>
             </div>
             <div class="lg:col-span-7 bg-slate-900/80 border border-slate-800 p-8 rounded-3xl">
                 <div class="w-full h-64 rounded-2xl overflow-hidden border border-slate-700">
-                    <iframe title="Shedole Hospital Location Map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3800.706173007055!2d77.2155829!3d18.0401824!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc155c5dfc1d0f5%3A0x6a19f2edec42e39!2sShedole%20Hospital!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" class="w-full h-full border-0" allowfullscreen="" loading="lazy"></iframe>
+                    <iframe title="Shedole Hospital Location Map" src="https://maps.google.com/?cid=14423924457649463889&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ" class="w-full h-full border-0" allowfullscreen="" loading="lazy"></iframe>
                 </div>
             </div>
         </div>
@@ -390,8 +381,39 @@
         <p>© 2026 Shedole Hospital, Bhalki. All rights reserved.</p>
     </footer>
 
+    <div id="imageModal" class="fixed inset-0 z-[100] bg-black/95 hidden flex-col items-center justify-center p-4 opacity-0">
+        <button onclick="closeModal()" class="absolute top-6 right-6 text-white text-3xl bg-slate-800 w-12 h-12 rounded-full flex items-center justify-center hover:bg-red-600 transition">&times;</button>
+        <img id="modalImage" src="" alt="Full Poster" class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl border border-slate-700">
+    </div>
+
     <script>
-        // 1. Mobile Menu Toggle
+        // --- 1. FLIP & MODAL LOGIC ---
+        function toggleFlip(btn) {
+            const card = btn.closest('.flip-card');
+            card.classList.toggle('flipped');
+        }
+
+        function openModal(imgSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modalImg.src = imgSrc;
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.add('opacity-100'), 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('opacity-100');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        // Close modal when clicking outside the image
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+
+        // --- 2. MOBILE MENU ---
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
             const icon = document.getElementById('menuIcon');
@@ -399,7 +421,8 @@
             icon.className = menu.classList.contains('hidden') ? "fa-solid fa-bars text-lg" : "fa-solid fa-xmark text-lg";
         }
 
-        // 2. Translation Dictionary (English, Kannada, Hindi, Marathi)
+
+        // --- 3. TRANSLATION (i18n) ---
         const dictionary = {
             en: {
                 navServices: "Treatments", navDoctor: "Doctor", navSpecialists: "Specialists", navFacilities: "Facilities", navContact: "Contact",
@@ -507,17 +530,15 @@
             });
         }
 
-        // 3. Scroll Pop-out Effect for Swipe Cards (Mobile Center Focus)
+        // --- 4. SCROLL OBSERVER (Pop-out effect) ---
         document.addEventListener("DOMContentLoaded", function() {
             const cards = document.querySelectorAll('.swipe-card');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if(entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        entry.target.classList.remove('inactive');
+                        entry.target.classList.add('active'); entry.target.classList.remove('inactive');
                     } else {
-                        entry.target.classList.remove('active');
-                        entry.target.classList.add('inactive');
+                        entry.target.classList.remove('active'); entry.target.classList.add('inactive');
                     }
                 });
             }, { root: null, rootMargin: '0px -10% 0px -10%', threshold: 0.6 });
@@ -527,28 +548,7 @@
             }
         });
 
-        // 4. 3D Tilt Effect on Desktop Hover
-        const tiltElements = document.querySelectorAll('.tilt-element');
-        tiltElements.forEach(el => {
-            el.addEventListener('mousemove', (e) => {
-                if(window.innerWidth < 768) return;
-                const rect = el.getBoundingClientRect();
-                const x = e.clientX - rect.left; 
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const tiltX = ((y - centerY) / centerY) * -5;
-                const tiltY = ((x - centerX) / centerX) * 5;
-                el.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.02, 1.02, 1.02)`;
-                el.style.transition = "none";
-            });
-            el.addEventListener('mouseleave', () => {
-                el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-                el.style.transition = "transform 0.5s ease";
-            });
-        });
-
-        // 5. Three.js Background 3D Pulsing Heart
+        // --- 5. 3D HEART CANVAS ---
         const canvas = document.getElementById('heart-canvas');
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -568,7 +568,6 @@
         const material = new THREE.PointsMaterial({ color: 0xef4444, size: 0.15, transparent: true, opacity: 0.5 });
         const heart = new THREE.Points(geometry, material);
         
-        // Position Heart
         heart.position.x = window.innerWidth > 768 ? 4 : 0;
         heart.position.y = window.innerWidth > 768 ? 0 : 2;
         scene.add(heart);
@@ -578,8 +577,8 @@
         function animate() {
             requestAnimationFrame(animate);
             const time = clock.getElapsedTime();
-            heart.rotation.y = Math.sin(time * 0.5) * 0.3; // Gentle swing
-            const pulse = 1 + Math.sin(time * 3) * 0.05; // Heartbeat pulse
+            heart.rotation.y = Math.sin(time * 0.5) * 0.3; 
+            const pulse = 1 + Math.sin(time * 3) * 0.05; 
             heart.scale.set(pulse, pulse, pulse);
             renderer.render(scene, camera);
         }
