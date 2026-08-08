@@ -36,7 +36,8 @@
 
         /* 3D FLIP CARD CSS */
         /* 3D FLIP CARD CSS - HEIGHT INCREASED */
-       .flip-card { perspective: 1000px; height: 580px; } /* 410px se 520px kar diya */
+        /* Height ko 580px se 480px kar dijiye */
+        .flip-card { perspective: 1000px; height: 480px; } /* 410px se 520px kar diya */
         .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
         .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 1rem; overflow: hidden; }
@@ -169,7 +170,7 @@
         </div>
     </section>
 
-    <section id="specialists" class="relative bg-slate-900/40 border-y border-slate-800/80 py-20 overflow-hidden">
+ <section id="specialists" class="relative bg-slate-900/40 border-y border-slate-800/80 py-20 overflow-hidden">
         
         <i class="fa-solid fa-plus bg-cross" style="left: 10%; animation-delay: 0s; font-size: 2rem;"></i>
         <i class="fa-solid fa-plus bg-cross" style="left: 30%; animation-delay: 3s; font-size: 3rem;"></i>
@@ -193,7 +194,7 @@
                 <div class="swipe-card flip-card w-[85vw] md:w-[280px] shrink-0 snap-center">
                     <div class="flip-card-inner">
                         <div class="flip-card-front">
-                            <img src="./neuro.jpg" alt="Dr. Manish Kulkarni" class="w-full h-48 object-cover object-top">
+                            <img src="./neuro.jpg" alt="Dr. Manish Kulkarni" class="w-full h-[200px] object-cover">
                             <div class="p-5 flex flex-col flex-1 text-left">
                                 <h3 class="text-lg font-bold text-white" data-i18n="drManish">Dr. Manish Kulkarni</h3>
                                 <p class="text-blue-400 text-[11px] font-bold uppercase tracking-wider mb-3" data-i18n="specNeuro">MD, DM Neurologist</p>
@@ -225,7 +226,7 @@
                 <div class="swipe-card flip-card w-[85vw] md:w-[280px] shrink-0 snap-center">
                     <div class="flip-card-inner">
                         <div class="flip-card-front">
-                            <img src="./surgery.jpg" alt="Dr. Shailesh Math" class="w-full h-48 object-cover object-top">
+                            <img src="./surgery.jpg" alt="Dr. Shailesh Math" class="w-full h-[200px] object-cover">
                             <div class="p-5 flex flex-col flex-1 text-left">
                                 <h3 class="text-lg font-bold text-white" data-i18n="drShailesh">Dr. Shailesh Math</h3>
                                 <p class="text-emerald-400 text-[11px] font-bold uppercase tracking-wider mb-3" data-i18n="specSurg">MS, FMAS Surgeon</p>
@@ -257,7 +258,7 @@
                 <div class="swipe-card flip-card w-[85vw] md:w-[280px] shrink-0 snap-center">
                     <div class="flip-card-inner">
                         <div class="flip-card-front">
-                            <img src="./physio.jfif" alt="Dr. Dinesh Annagiri" class="w-full h-48 object-cover object-top">
+                            <img src="./physio.jfif" alt="Dr. Dinesh Annagiri" class="w-full h-[200px] object-cover">
                             <div class="p-5 flex flex-col flex-1 text-left">
                                 <h3 class="text-lg font-bold text-white" data-i18n="drDinesh">Dr. Dinesh Annagiri</h3>
                                 <p class="text-amber-400 text-[11px] font-bold uppercase tracking-wider mb-3" data-i18n="specPhysio">Consultant Physiotherapist</p>
@@ -289,7 +290,8 @@
                 <div class="swipe-card flip-card w-[85vw] md:w-[280px] shrink-0 snap-center">
                     <div class="flip-card-inner">
                         <div class="flip-card-front">
-                            <img src="./dr_namrata.jpg" alt="Dr. Namrata Shedole" onerror="this.src='./60623.jpg'" class="w-full h-48 object-cover object-top">
+                            <!-- Removed onerror completely to fix infinite loading -->
+                            <img src="./dr_namrata.jpg" alt="Dr. Namrata Shedole" class="w-full h-[200px] object-cover">
                             <div class="p-5 flex flex-col flex-1 text-left">
                                 <h3 class="text-lg font-bold text-white" data-i18n="drNamrata">Dr. Namrata Shedole</h3>
                                 <p class="text-purple-400 text-[11px] font-bold uppercase tracking-wider mb-3" data-i18n="specNamrata">B.A.M.S Specialist</p>
@@ -312,7 +314,6 @@
                                 <li>✔️ Fissure & Fistula</li>
                                 <li>✔️ Specialist in Ksharsutra</li>
                             </ul>
-                            <!-- Modal image naam fix kiya hai yahan -->
                             <button onclick="openModal('./60623_2.jpg')" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl w-full flex justify-center items-center gap-2 mb-3 shadow-lg shadow-red-600/30">🖼️ View Full Poster</button>
                             <button onclick="toggleFlip(this)" class="text-slate-400 hover:text-white text-xs underline decoration-slate-600 mt-2">Back to Front</button>
                         </div>
@@ -322,7 +323,8 @@
                 <div class="swipe-card flip-card w-[85vw] md:w-[280px] shrink-0 snap-center">
                     <div class="flip-card-inner">
                         <div class="flip-card-front">
-                            <img src="./dr_tanaji.jpg" alt="Dr. Tanaji Uchhe" onerror="this.src='./60623.jpg'" class="w-full h-48 object-cover object-top">
+                            <!-- Removed onerror completely to fix infinite loading -->
+                            <img src="./dr_tanaji.jpg" alt="Dr. Tanaji Uchhe" class="w-full h-[200px] object-cover">
                             <div class="p-5 flex flex-col flex-1 text-left">
                                 <h3 class="text-lg font-bold text-white" data-i18n="drTanaji">Dr. Tanaji Uchhe</h3>
                                 <p class="text-purple-400 text-[11px] font-bold uppercase tracking-wider mb-3" data-i18n="specTanaji">B.A.M.S, D.Y.A.</p>
