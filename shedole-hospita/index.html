@@ -6,9 +6,8 @@
     <title>Shedole Hospital | Cardiology & Emergency Care in Bhalki</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -16,17 +15,31 @@
             background: rgba(11, 15, 25, 0.9);
             backdrop-filter: blur(12px);
         }
-        /* Hide scrollbar for horizontal swipe sections on mobile */
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        /* Mobile Scroll & Pop-out Styles */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .swipe-card { transition: all 0.4s ease; }
+        .swipe-card.active { transform: scale(1); opacity: 1; border-color: #ef4444; box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.2); }
+        .swipe-card.inactive { transform: scale(0.92); opacity: 0.6; }
+        
+        /* Ticker Animation */
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .animate-marquee { display: inline-block; white-space: nowrap; animation: marquee 25s linear infinite; }
+        
+        /* Live Dot Pulse */
+        @keyframes pulse-dot { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
+        .live-dot { animation: pulse-dot 2s infinite; }
+        
+        #heart-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.6; }
     </style>
 </head>
 <body class="bg-[#0b0f19] text-slate-100 antialiased selection:bg-red-500 selection:text-white">
+
+    <div class="bg-red-600 border-b border-red-700 text-white text-[11px] font-bold py-2.5 overflow-hidden flex items-center">
+        <div class="animate-marquee tracking-wider">
+            🚨 24/7 EMERGENCY & VENTILATOR FACILITY AVAILABLE &nbsp; • &nbsp; 🫀 ADVANCED ECG, 2D ECHO & TMT TESTING &nbsp; • &nbsp; 🚑 COMPLETE CARE FOR ROAD TRAFFIC ACCIDENTS &nbsp; • &nbsp; 🧠 NEUROLOGIST DR. MANISH VISITING 1ST THURSDAY &nbsp; • &nbsp; 🌿 FREE PILES & PANCHAKARMA CAMP &nbsp; • &nbsp; 
+        </div>
+    </div>
 
     <header class="sticky top-0 z-50 glass-nav border-b border-slate-800/80">
         <div class="max-w-6xl mx-auto px-5 h-20 flex items-center justify-between">
@@ -38,10 +51,10 @@
             </a>
 
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-                <a href="#about" data-i18n="navAbout" class="hover:text-white transition-colors">About</a>
-                <a href="#services" data-i18n="navServices" class="hover:text-white transition-colors">Services</a>
+                <a href="#treatments" data-i18n="navServices" class="hover:text-white transition-colors">Treatments</a>
                 <a href="#physician" data-i18n="navDoctor" class="hover:text-white transition-colors">Doctor</a>
                 <a href="#specialists" data-i18n="navSpecialists" class="hover:text-white transition-colors">Specialists</a>
+                <a href="#facilities" data-i18n="navFacilities" class="hover:text-white transition-colors">Facilities</a>
                 <a href="#contact" data-i18n="navContact" class="hover:text-white transition-colors">Contact</a>
             </nav>
 
@@ -53,34 +66,33 @@
                     <option value="mr">🌐 मराठी</option>
                 </select>
 
-                <button id="menuBtn" onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 flex items-center justify-center">
+                <button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 flex items-center justify-center">
                     <i id="menuIcon" class="fa-solid fa-bars text-lg"></i>
                 </button>
             </div>
         </div>
 
-        <div id="mobileMenu" class="hidden fixed inset-x-0 top-20 bg-[#0b0f19] border-b border-slate-800 p-6 space-y-4 shadow-2xl z-50 md:hidden">
-            <a href="#about" onclick="toggleMobileMenu()" data-i18n="navAbout" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">About</a>
-            <a href="#services" onclick="toggleMobileMenu()" data-i18n="navServices" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">Services</a>
+        <div id="mobileMenu" class="hidden fixed inset-x-0 top-[114px] bg-[#0b0f19] border-b border-slate-800 p-6 space-y-4 shadow-2xl z-50 md:hidden">
+            <a href="#treatments" onclick="toggleMobileMenu()" data-i18n="navServices" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">Treatments</a>
             <a href="#physician" onclick="toggleMobileMenu()" data-i18n="navDoctor" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">Doctor</a>
             <a href="#specialists" onclick="toggleMobileMenu()" data-i18n="navSpecialists" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">Specialists</a>
+            <a href="#facilities" onclick="toggleMobileMenu()" data-i18n="navFacilities" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">Facilities</a>
             <a href="#contact" onclick="toggleMobileMenu()" data-i18n="navContact" class="block text-lg font-semibold text-slate-200 border-b border-slate-800/50 pb-2">Contact</a>
-            <a href="tel:+916362517714" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-red-600/30">
-                <i class="fa-solid fa-phone"></i> <span data-i18n="btnCall">Call Hospital</span>
+            <a href="tel:+916362517714" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 mt-4">
+                <i class="fa-solid fa-phone"></i> <span>Call Hospital</span>
             </a>
         </div>
     </header>
 
-    <section class="max-w-6xl mx-auto px-5 pt-12 pb-16 md:py-24">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
+    <section class="relative max-w-6xl mx-auto px-5 pt-12 pb-16 md:py-24 overflow-hidden">
+        <canvas id="heart-canvas"></canvas> <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
             <div class="lg:col-span-7 space-y-6">
                 <div class="flex flex-wrap items-center gap-2 text-xs font-bold tracking-widest text-red-400 uppercase">
                     <span data-i18n="tagCardiology">CARDIOLOGY</span>
                     <span>•</span>
                     <span data-i18n="tagLocation">BHALKI, KARNATAKA</span>
                     <span>•</span>
-                    <span data-i18n="tagOpen">24x7 OPEN</span>
+                    <span class="flex items-center gap-1.5 text-green-400"><div class="w-2 h-2 bg-green-500 rounded-full live-dot"></div> 24x7 OPEN</span>
                 </div>
 
                 <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.15] text-white">
@@ -96,23 +108,16 @@
                         <i class="fa-solid fa-phone"></i>
                         <span data-i18n="btnCall">Call the Hospital</span>
                     </a>
-                    <a href="https://maps.google.com/maps?q=Shedole+Hospital,+Bhalki,+Karnataka" target="_blank" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold px-6 py-4 rounded-full flex items-center justify-center gap-3 transition-all">
+                    <a href="#contact" class="bg-slate-800/80 hover:bg-slate-700 backdrop-blur border border-slate-700 text-slate-200 font-semibold px-6 py-4 rounded-full flex items-center justify-center gap-3 transition-all">
                         <i class="fa-solid fa-location-arrow text-red-400"></i>
                         <span data-i18n="btnDirections">Find Directions</span>
                     </a>
-                </div>
-
-                <div class="flex items-center gap-2 pt-4 text-slate-400 text-sm">
-                    <div class="flex text-amber-400 text-xs">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
-                    </div>
-                    <span class="font-bold text-slate-200">4.4</span> <span data-i18n="ratingText">Rated by patients in Bhalki</span>
                 </div>
             </div>
 
             <div class="lg:col-span-5 relative">
                 <div class="relative rounded-3xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-900 group">
-                    <img id="imgDoctorHero" src="./doctor.jpg.jpg" alt="Dr. Gunderao B. Shedole" class="w-full h-[450px] object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                    <img src="./doctor.jpg.jpg" alt="Dr. Gunderao B. Shedole" class="w-full h-[450px] object-cover object-top group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute bottom-6 right-6 bg-red-600/95 backdrop-blur-md text-white p-4 rounded-2xl shadow-xl flex flex-col items-center border border-red-400/30">
                         <span class="text-2xl font-black">24/7</span>
                         <span class="text-[10px] font-bold uppercase tracking-wider" data-i18n="badgeEmergency">Emergency Open</span>
@@ -122,40 +127,61 @@
         </div>
     </section>
 
-    <section id="services" class="max-w-6xl mx-auto px-5 py-20 border-t border-slate-800/80">
-        <div class="text-xs font-bold uppercase tracking-widest text-red-500 mb-2" data-i18n="secServicesTag">WHAT WE DO</div>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-12" data-i18n="secServicesTitle">Complete care under one roof.</h2>
+    <section id="treatments" class="max-w-6xl mx-auto px-5 py-20 border-t border-slate-800/80">
+        <div class="text-xs font-bold uppercase tracking-widest text-red-500 mb-2" data-i18n="secServicesTag">WHAT WE TREAT</div>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-12" data-i18n="secServicesTitle">Advanced facilities & complete care.</h2>
 
-        <div class="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-6 md:pb-0">
-            <div class="w-[85vw] md:w-auto shrink-0 snap-center bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
-                <div class="w-12 h-12 bg-red-500/10 text-red-500 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-heart-circle-check"></i></div>
-                <h3 class="text-lg font-bold text-white mb-1" data-i18n="srv1">Cardiac Care</h3>
-                <p class="text-slate-400 text-xs leading-relaxed" data-i18n="srv1Desc">Diagnosis and treatment of heart disease, hypertension and related conditions.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl hover:border-red-500/50 transition">
+                <div class="w-12 h-12 bg-red-500/10 text-red-500 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-heart-pulse"></i></div>
+                <h3 class="text-lg font-bold text-white mb-3" data-i18n="trCardioTitle">Cardiac Care</h3>
+                <ul class="space-y-2 text-sm text-slate-400 font-medium">
+                    <li><i class="fa-solid fa-check text-red-500 mr-2 text-xs"></i> BP Management</li>
+                    <li><i class="fa-solid fa-check text-red-500 mr-2 text-xs"></i> Heart Attack Care</li>
+                    <li><i class="fa-solid fa-check text-red-500 mr-2 text-xs"></i> ECG & 2D ECHO</li>
+                    <li><i class="fa-solid fa-check text-red-500 mr-2 text-xs"></i> TMT Testing</li>
+                </ul>
             </div>
-            <div class="w-[85vw] md:w-auto shrink-0 snap-center bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
-                <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-bed-pulse"></i></div>
-                <h3 class="text-lg font-bold text-white mb-1" data-i18n="srv2">Emergency & ICU</h3>
-                <p class="text-slate-400 text-xs leading-relaxed" data-i18n="srv2Desc">Round-the-clock emergency response with a fully monitored intensive care unit.</p>
+            
+            <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl hover:border-blue-500/50 transition">
+                <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-truck-medical"></i></div>
+                <h3 class="text-lg font-bold text-white mb-3" data-i18n="trEmTitle">Emergency & ICU</h3>
+                <ul class="space-y-2 text-sm text-slate-400 font-medium">
+                    <li><i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> Road Traffic Accidents</li>
+                    <li><i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> 24/7 Ventilator Facility</li>
+                    <li><i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> Paralysis Stroke Care</li>
+                </ul>
             </div>
-            <div class="w-[85vw] md:w-auto shrink-0 snap-center bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
-                <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-user-doctor"></i></div>
-                <h3 class="text-lg font-bold text-white mb-1" data-i18n="srv3">General Medicine</h3>
-                <p class="text-slate-400 text-xs leading-relaxed" data-i18n="srv3Desc">Consultation and treatment for everyday illnesses and chronic conditions.</p>
+
+            <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl hover:border-emerald-500/50 transition">
+                <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-scalpel"></i></div>
+                <h3 class="text-lg font-bold text-white mb-3" data-i18n="trSurgTitle">Surgery & Procedures</h3>
+                <ul class="space-y-2 text-sm text-slate-400 font-medium">
+                    <li><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> Appendix & Hernia</li>
+                    <li><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> Hydrocele</li>
+                    <li><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> Piles, Fissure & Fistula</li>
+                </ul>
             </div>
-            <div class="w-[85vw] md:w-auto shrink-0 snap-center bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
-                <div class="w-12 h-12 bg-purple-500/10 text-purple-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-wave-square"></i></div>
-                <h3 class="text-lg font-bold text-white mb-1" data-i18n="srv4">Diagnostics & ECG</h3>
-                <p class="text-slate-400 text-xs leading-relaxed" data-i18n="srv4Desc">On-site ECG and diagnostic support for fast, accurate decisions.</p>
+
+            <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl hover:border-amber-500/50 transition">
+                <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-stethoscope"></i></div>
+                <h3 class="text-lg font-bold text-white mb-3" data-i18n="trMedTitle">General Medicine</h3>
+                <ul class="space-y-2 text-sm text-slate-400 font-medium">
+                    <li><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> Sugar (Diabetes)</li>
+                    <li><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> Thyroid & Asthma</li>
+                    <li><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> Alcoholic Liver Disease</li>
+                    <li><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> Viral Fever</li>
+                </ul>
             </div>
-            <div class="w-[85vw] md:w-auto shrink-0 snap-center bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
-                <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-truck-medical"></i></div>
-                <h3 class="text-lg font-bold text-white mb-1" data-i18n="srv5">24x7 Ambulance</h3>
-                <p class="text-slate-400 text-xs leading-relaxed" data-i18n="srv5Desc">Rapid patient transport whenever and wherever it's needed.</p>
-            </div>
-            <div class="w-[85vw] md:w-auto shrink-0 snap-center bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
-                <div class="w-12 h-12 bg-teal-500/10 text-teal-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-stethoscope"></i></div>
-                <h3 class="text-lg font-bold text-white mb-1" data-i18n="srv6">Health Check-ups</h3>
-                <p class="text-slate-400 text-xs leading-relaxed" data-i18n="srv6Desc">Preventive screening and routine check-ups for the whole family.</p>
+
+            <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl hover:border-purple-500/50 transition">
+                <div class="w-12 h-12 bg-purple-500/10 text-purple-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-person-walking"></i></div>
+                <h3 class="text-lg font-bold text-white mb-3" data-i18n="trRehabTitle">Rehabilitation</h3>
+                <ul class="space-y-2 text-sm text-slate-400 font-medium">
+                    <li><i class="fa-solid fa-check text-purple-500 mr-2 text-xs"></i> Physiotherapy</li>
+                    <li><i class="fa-solid fa-check text-purple-500 mr-2 text-xs"></i> Post-Surgery Rehab</li>
+                    <li><i class="fa-solid fa-check text-purple-500 mr-2 text-xs"></i> Panchakarma</li>
+                </ul>
             </div>
         </div>
     </section>
@@ -171,9 +197,9 @@
                 </p>
             </div>
             <div class="md:col-span-5">
-                <div class="rounded-2xl overflow-hidden border border-slate-800 shadow-xl bg-slate-900">
+                <div class="rounded-2xl overflow-hidden border border-slate-800 shadow-xl bg-slate-900 tilt-element">
                     <img src="./doctor.jpg.jpg" alt="Dr. Gunderao B. Shedole" class="w-full h-72 object-cover object-top">
-                    <div class="p-4 bg-slate-900/90 text-xs text-slate-400 flex items-center gap-2">
+                    <div class="p-4 bg-slate-900/90 text-xs text-slate-400 flex items-center gap-2 border-t border-slate-800">
                         <i class="fa-solid fa-user-doctor text-red-400"></i> <span>Dr. Gunderao B. Shedole</span>
                     </div>
                 </div>
@@ -181,73 +207,100 @@
         </div>
     </section>
 
-    <section id="specialists" class="bg-slate-900/30 border-y border-slate-800/80 py-20">
+    <section id="specialists" class="bg-slate-900/40 border-y border-slate-800/80 py-20 overflow-hidden">
         <div class="max-w-6xl mx-auto px-5">
-            <div class="text-xs font-bold uppercase tracking-widest text-red-500 mb-2" data-i18n="specTag">OUR SPECIALISTS</div>
-            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-12" data-i18n="specTitle">Expert Care Across Departments.</h2>
-
-            <div class="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-6 md:pb-0">
-                <div class="w-[85vw] md:w-auto shrink-0 snap-center bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col items-center text-center hover:border-slate-700 transition">
-                    <div class="w-16 h-16 bg-blue-500/10 text-blue-400 rounded-full flex items-center justify-center text-2xl mb-4">
-                        <i class="fa-solid fa-brain"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-white" data-i18n="drManish">Dr. Manish Kulkarni</h3>
-                    <p class="text-blue-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specNeuro">MD, DM Neurologist</p>
-                    <p class="text-slate-400 text-xs mb-4 leading-relaxed" data-i18n="descNeuro">Expert in Stroke, Epilepsy, Migraine & EEG/NCS.</p>
-                    <span class="mt-auto bg-blue-600/20 text-blue-400 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wide border border-blue-500/20" data-i18n="visitNeuro">Visiting: 1st Thursday</span>
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <div class="text-xs font-bold uppercase tracking-widest text-red-500 mb-2" data-i18n="specTag">OUR SPECIALISTS</div>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-white" data-i18n="specTitle">Expert Care Across Departments.</h2>
                 </div>
-
-                <div class="w-[85vw] md:w-auto shrink-0 snap-center bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col items-center text-center hover:border-slate-700 transition">
-                    <div class="w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center text-2xl mb-4">
-                        <i class="fa-solid fa-scalpel"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-white" data-i18n="drShailesh">Dr. Shailesh Math</h3>
-                    <p class="text-emerald-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specSurg">MS, FMAS Surgeon</p>
-                    <p class="text-slate-400 text-xs mb-4 leading-relaxed" data-i18n="descSurg">Advanced Laparoscopic, Hernia & General Surgery.</p>
-                    <span class="mt-auto bg-emerald-600/20 text-emerald-400 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wide border border-emerald-500/20" data-i18n="visitSurg">Visiting Consultant</span>
+                <div class="md:hidden flex items-center gap-2 text-slate-400 text-xs font-bold animate-pulse">
+                    Swipe <i class="fa-solid fa-arrow-right"></i>
                 </div>
+            </div>
 
-                <div class="w-[85vw] md:w-auto shrink-0 snap-center bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col items-center text-center hover:border-slate-700 transition">
-                    <div class="w-16 h-16 bg-amber-500/10 text-amber-400 rounded-full flex items-center justify-center text-2xl mb-4">
-                        <i class="fa-solid fa-person-walking"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-white" data-i18n="drDinesh">Dr. Dinesh Annagiri</h3>
-                    <p class="text-amber-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specPhysio">Consultant Physiotherapist</p>
-                    <p class="text-slate-400 text-xs mb-4 leading-relaxed" data-i18n="descPhysio">Cervical pain, back pain, sports injuries & post-surgery rehab.</p>
-                    <span class="mt-auto bg-amber-600/20 text-amber-400 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wide border border-amber-500/20" data-i18n="visitPhysio">Mon-Sat (10 AM - 6 PM)</span>
-                </div>
+            <div class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-6 pb-8 px-2 md:px-0" id="specialist-scroll">
                 
-                <div class="w-[85vw] md:w-auto shrink-0 snap-center bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col items-center text-center hover:border-slate-700 transition">
-                    <div class="w-16 h-16 bg-purple-500/10 text-purple-400 rounded-full flex items-center justify-center text-2xl mb-4">
-                        <i class="fa-solid fa-spa"></i>
+                <div class="swipe-card w-[80vw] md:w-[280px] shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden tilt-element">
+                    <img src="./dr_manish.jpg" alt="Dr. Manish Kulkarni" onerror="this.src='https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=400&auto=format&fit=crop'" class="w-full h-48 object-cover">
+                    <div class="p-5 flex flex-col h-[200px]">
+                        <h3 class="text-lg font-bold text-white" data-i18n="drManish">Dr. Manish Kulkarni</h3>
+                        <p class="text-blue-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specNeuro">MD, DM Neurologist</p>
+                        <p class="text-slate-400 text-xs mb-4 leading-relaxed" data-i18n="descNeuro">Stroke, Epilepsy, Migraine & EEG/NCS.</p>
+                        <div class="mt-auto flex items-center gap-2 bg-blue-600/10 text-blue-400 text-[10px] font-bold px-3 py-2 rounded-lg border border-blue-500/20">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full live-dot"></div>
+                            <span data-i18n="visitNeuro">Visiting: 1st Thursday</span>
+                        </div>
                     </div>
-                    <h3 class="text-lg font-bold text-white" data-i18n="drPiles">Dr. Namrata & Dr. Tanaji</h3>
-                    <p class="text-purple-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specPiles">B.A.M.S Specialists</p>
-                    <p class="text-slate-400 text-xs mb-4 leading-relaxed" data-i18n="descPiles">Specialists in Piles, Fissure, Fistula & Panchakarma.</p>
-                    <span class="mt-auto bg-purple-600/20 text-purple-400 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wide border border-purple-500/20" data-i18n="visitPiles">In-House Experts</span>
+                </div>
+
+                <div class="swipe-card w-[80vw] md:w-[280px] shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden tilt-element">
+                    <img src="./dr_shailesh.jpg" alt="Dr. Shailesh Math" onerror="this.src='https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=400&auto=format&fit=crop'" class="w-full h-48 object-cover">
+                    <div class="p-5 flex flex-col h-[200px]">
+                        <h3 class="text-lg font-bold text-white" data-i18n="drShailesh">Dr. Shailesh Math</h3>
+                        <p class="text-emerald-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specSurg">MS, FMAS Surgeon</p>
+                        <p class="text-slate-400 text-xs mb-4 leading-relaxed" data-i18n="descSurg">Advanced Laparoscopic, Hernia & General Surgery.</p>
+                        <div class="mt-auto flex items-center gap-2 bg-emerald-600/10 text-emerald-400 text-[10px] font-bold px-3 py-2 rounded-lg border border-emerald-500/20">
+                            <div class="w-2 h-2 bg-emerald-500 rounded-full live-dot"></div>
+                            <span data-i18n="visitSurg">Visiting Consultant</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swipe-card w-[80vw] md:w-[280px] shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden tilt-element">
+                    <img src="./dr_dinesh.jpg" alt="Dr. Dinesh Annagiri" onerror="this.src='https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=400&auto=format&fit=crop'" class="w-full h-48 object-cover">
+                    <div class="p-5 flex flex-col h-[200px]">
+                        <h3 class="text-lg font-bold text-white" data-i18n="drDinesh">Dr. Dinesh Annagiri</h3>
+                        <p class="text-amber-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specPhysio">Consultant Physiotherapist</p>
+                        <p class="text-slate-400 text-xs mb-4 leading-relaxed" data-i18n="descPhysio">Cervical pain, back pain, sports injuries & rehab.</p>
+                        <div class="mt-auto flex items-center gap-2 bg-amber-600/10 text-amber-400 text-[10px] font-bold px-3 py-2 rounded-lg border border-amber-500/20">
+                            <div class="w-2 h-2 bg-amber-500 rounded-full live-dot"></div>
+                            <span data-i18n="visitPhysio">Mon-Sat (10 AM - 6 PM)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swipe-card w-[80vw] md:w-[280px] shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden tilt-element">
+                    <img src="./dr_piles_team.jpg" alt="Dr. Namrata & Dr. Tanaji" onerror="this.src='https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?q=80&w=400&auto=format&fit=crop'" class="w-full h-48 object-cover">
+                    <div class="p-5 flex flex-col h-[200px]">
+                        <h3 class="text-lg font-bold text-white" data-i18n="drPiles">Dr. Namrata & Tanaji</h3>
+                        <p class="text-purple-400 text-[11px] font-bold uppercase tracking-wider mb-2" data-i18n="specPiles">B.A.M.S Specialists</p>
+                        <p class="text-slate-400 text-xs mb-4 leading-relaxed" data-i18n="descPiles">Piles, Fissure, Fistula & Panchakarma Experts.</p>
+                        <div class="mt-auto flex items-center gap-2 bg-purple-600/10 text-purple-400 text-[10px] font-bold px-3 py-2 rounded-lg border border-purple-500/20">
+                            <div class="w-2 h-2 bg-purple-500 rounded-full live-dot"></div>
+                            <span data-i18n="visitPiles">In-House Experts</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="facilities" class="max-w-6xl mx-auto px-5 py-20 border-t border-slate-800/80">
-        <div class="text-xs font-bold uppercase tracking-widest text-red-500 mb-2" data-i18n="secFacTag">INSIDE THE HOSPITAL</div>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-12" data-i18n="secFacTitle">Clean, calm and ready — day and night.</h2>
+        <div class="flex justify-between items-end mb-8">
+            <div>
+                <div class="text-xs font-bold uppercase tracking-widest text-red-500 mb-2" data-i18n="secFacTag">INSIDE THE HOSPITAL</div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white" data-i18n="secFacTitle">Clean, calm and ready.</h2>
+            </div>
+            <div class="md:hidden flex items-center gap-2 text-slate-400 text-xs font-bold animate-pulse">
+                Swipe <i class="fa-solid fa-arrow-right"></i>
+            </div>
+        </div>
 
-        <div class="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-6 md:pb-0">
-            <div class="w-[85vw] md:w-auto shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-                <img src="./hospital_building.jpg.jpg" alt="Sanvi Medical Store Placeholder" class="w-full h-56 object-cover">
+        <div class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-6 pb-6 px-2 md:px-0" id="facility-scroll">
+            <div class="swipe-card w-[85vw] md:w-1/3 shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden tilt-element">
+                <img src="./hospital_building.jpg.jpg" alt="Hospital Building" class="w-full h-56 object-cover">
                 <div class="p-4 border-t border-slate-800/50">
-                    <h4 class="font-bold text-white text-sm" data-i18n="fac1Title">Sanvi Medical Store</h4>
+                    <h4 class="font-bold text-white text-sm" data-i18n="fac1Title">Hospital Exterior & Campus</h4>
                 </div>
             </div>
-            <div class="w-[85vw] md:w-auto shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-                <img src="./reception.jpg.jpg" alt="ICU Placeholder" class="w-full h-56 object-cover">
+            <div class="swipe-card w-[85vw] md:w-1/3 shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden tilt-element">
+                <img src="./icu_ward.jpg" alt="ICU Ward" onerror="this.src='./reception.jpg.jpg'" class="w-full h-56 object-cover">
                 <div class="p-4 border-t border-slate-800/50">
                     <h4 class="font-bold text-white text-sm" data-i18n="fac2Title">In-patient Ward & ICU</h4>
                 </div>
             </div>
-            <div class="w-[85vw] md:w-auto shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+            <div class="swipe-card w-[85vw] md:w-1/3 shrink-0 snap-center bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden tilt-element">
                 <img src="./reception.jpg.jpg" alt="Patient Waiting Area" class="w-full h-56 object-cover">
                 <div class="p-4 border-t border-slate-800/50">
                     <h4 class="font-bold text-white text-sm" data-i18n="fac3Title">Patient Care Area</h4>
@@ -269,11 +322,18 @@
                             <p class="text-sm font-semibold text-white mt-0.5">Near New Water Tank, Housing Board Colony, Bhalki, Karnataka 585328</p>
                         </div>
                     </div>
+                    <div class="flex items-start gap-4 p-4 bg-slate-900/60 border border-slate-800 rounded-2xl">
+                        <div class="w-10 h-10 bg-red-500/10 text-red-500 rounded-xl flex items-center justify-center shrink-0 mt-1"><i class="fa-solid fa-phone"></i></div>
+                        <div>
+                            <span class="text-xs font-bold uppercase text-slate-400" data-i18n="lblPhone">Phone</span>
+                            <p class="text-sm font-semibold text-white mt-0.5">+91 63625 17714</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="lg:col-span-7 bg-slate-900/80 border border-slate-800 p-8 rounded-3xl space-y-6">
-                <div class="w-full h-52 rounded-2xl overflow-hidden border border-slate-700">
-                    <iframe title="Shedole Hospital Location Map" src="https://maps.google.com/maps?q=Shedole%20Hospital,%20Bhalki&t=&z=15&ie=UTF8&iwloc=&output=embed" class="w-full h-full border-0" allowfullscreen="" loading="lazy"></iframe>
+            <div class="lg:col-span-7 bg-slate-900/80 border border-slate-800 p-8 rounded-3xl">
+                <div class="w-full h-64 rounded-2xl overflow-hidden border border-slate-700">
+                    <iframe title="Shedole Hospital Location" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3798.118228392183!2d77.20815127604473!3d18.04169728296317!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcc35dae68ca0b5%3A0xb32d7dfdf75e1251!2sShedole%20Hospital!5e0!3m2!1sen!2sin!4v1714902847291!5m2!1sen!2sin" class="w-full h-full border-0" allowfullscreen="" loading="lazy"></iframe>
                 </div>
             </div>
         </div>
@@ -284,6 +344,7 @@
     </footer>
 
     <script>
+        // 1. Mobile Menu Toggle
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
             const icon = document.getElementById('menuIcon');
@@ -291,118 +352,95 @@
             icon.className = menu.classList.contains('hidden') ? "fa-solid fa-bars text-lg" : "fa-solid fa-xmark text-lg";
         }
 
+        // 2. Translation Dictionary (English, Kannada, Hindi, Marathi)
         const dictionary = {
             en: {
-                navAbout: "About", navServices: "Services", navDoctor: "Doctor", navSpecialists: "Specialists", navFacilities: "Facilities", navContact: "Contact",
-                tagCardiology: "CARDIOLOGY", tagLocation: "BHALKI, KARNATAKA", tagOpen: "24x7 OPEN",
+                navServices: "Treatments", navDoctor: "Doctor", navSpecialists: "Specialists", navFacilities: "Facilities", navContact: "Contact",
                 heroTitlePart1: "Every heartbeat deserves", heroTitlePart2: "expert care.",
-                heroDesc: "Shedole Hospital brings advanced cardiac and emergency care to Bhalki — led by Dr. Gunderao B. Shedole, trusted by families across the region.",
+                heroDesc: "Shedole Hospital brings advanced cardiac and emergency care to Bhalki — trusted by families across the region.",
                 btnCall: "Call the Hospital", btnDirections: "Find Directions", ratingText: "Rated by patients in Bhalki", badgeEmergency: "Emergency Open",
-                secAboutTag: "WHO WE ARE", secAboutTitle: "A hospital built on trust, run around the clock.",
-                card1Title: "Rooted in Bhalki", card1Desc: "For years, Shedole Hospital has served the people of Bhalki and nearby villages with dependable, compassionate medical care.",
-                card2Title: "Heart Specialists", card2Desc: "Our focus is cardiology — diagnosing and treating heart conditions with modern equipment and an experienced hand.",
-                card3Title: "Always Open", card3Desc: "Emergencies don't keep hours, and neither do we. Our doors and ICU stay open 24 hours, every day of the year.",
-                secServicesTag: "WHAT WE DO", secServicesTitle: "Complete care under one roof.",
-                srv1: "Cardiac Care", srv1Desc: "Diagnosis and treatment of heart disease, hypertension and related conditions.",
-                srv2: "Emergency & ICU", srv2Desc: "Round-the-clock emergency response with a fully monitored intensive care unit.",
-                srv3: "General Medicine", srv3Desc: "Consultation and treatment for everyday illnesses and chronic conditions.",
-                srv4: "Diagnostics & ECG", srv4Desc: "On-site ECG and diagnostic support for fast, accurate decisions.",
-                srv5: "24x7 Ambulance", srv5Desc: "Rapid patient transport whenever and wherever it's needed.",
-                srv6: "Health Check-ups", srv6Desc: "Preventive screening and routine check-ups for the whole family.",
+                
+                secServicesTag: "WHAT WE TREAT", secServicesTitle: "Advanced facilities & complete care.",
+                trCardioTitle: "Cardiac Care", trEmTitle: "Emergency & ICU", trSurgTitle: "Surgery & Procedures", trMedTitle: "General Medicine", trRehabTitle: "Rehabilitation",
+                
                 secPhysicianTag: "THE PHYSICIAN", physicianRole: "Cardiologist & Chief Physician",
-                physicianBio: "Dr. Gunderao B. Shedole is a respected cardiologist serving Bhalki with dedication and skill. Patients know him for clear guidance, a steady hand in emergencies, and genuine care for every family that walks through the door.",
+                physicianBio: "Dr. Gunderao B. Shedole is a respected cardiologist serving Bhalki with dedication and skill. Patients know him for clear guidance, a steady hand in emergencies, and genuine care for every family.",
+                
                 specTag: "OUR SPECIALISTS", specTitle: "Expert Care Across Departments.",
-                drManish: "Dr. Manish Kulkarni", specNeuro: "MD, DM Neurologist", descNeuro: "Expert in Stroke, Epilepsy, Migraine & EEG/NCS.", visitNeuro: "Visiting: 1st Thursday",
+                drManish: "Dr. Manish Kulkarni", specNeuro: "MD, DM Neurologist", descNeuro: "Stroke, Epilepsy, Migraine & EEG/NCS.", visitNeuro: "Visiting: 1st Thursday",
                 drShailesh: "Dr. Shailesh Math", specSurg: "MS, FMAS Surgeon", descSurg: "Advanced Laparoscopic, Hernia & General Surgery.", visitSurg: "Visiting Consultant",
-                drDinesh: "Dr. Dinesh Annagiri", specPhysio: "Consultant Physiotherapist", descPhysio: "Cervical pain, back pain, sports injuries & post-surgery rehab.", visitPhysio: "Mon-Sat (10 AM - 6 PM)",
-                drPiles: "Dr. Namrata & Dr. Tanaji", specPiles: "B.A.M.S Specialists", descPiles: "Specialists in Piles, Fissure, Fistula & Panchakarma.", visitPiles: "In-House Experts",
-                secFacTag: "INSIDE THE HOSPITAL", secFacTitle: "Clean, calm and ready — day and night.",
-                fac1Title: "Sanvi Medical Store", fac2Title: "In-patient Ward & ICU", fac3Title: "Patient Care Area",
-                secContactTag: "GET IN TOUCH", secContactTitle: "Reach us anytime.", lblAddress: "Address"
-            },
-            kn: {
-                navAbout: "ನಮ್ಮ ಬಗ್ಗೆ", navServices: "ಸೇವೆಗಳು", navDoctor: "ವೈದ್ಯರು", navSpecialists: "ತಜ್ಞರು", navFacilities: "ಸೌಲಭ್ಯಗಳು", navContact: "ಸಂಪರ್ಕಿಸಿ",
-                tagCardiology: "ಹೃದ್ರೋಗ ವಿಭಾಗ", tagLocation: "ಭಾಲ್ಕಿ, ಕರ್ನಾಟಕ", tagOpen: "24x7 ತೆರೆದಿರುತ್ತದೆ",
-                heroTitlePart1: "ಪ್ರತಿಯೊಂದು ಹೃದಯಬಡಿತಕ್ಕೂ", heroTitlePart2: "ಉತ್ತಮ ಚಿಕಿತ್ಸೆ ಬೇಕು.",
-                heroDesc: "ಶೇಡೋಳೆ ಆಸ್ಪತ್ರೆಯು ಭಾಲ್ಕಿಯಲ್ಲಿ ಸುಧಾರಿತ ಹೃದಯ ಮತ್ತು ತುರ್ತು ಚಿಕಿತ್ಸೆಯನ್ನು ಒದಗಿಸುತ್ತದೆ.",
-                btnCall: "ಆಸ್ಪತ್ರೆಗೆ ಕರೆ ಮಾಡಿ", btnDirections: "ದಾರಿ ವೀಕ್ಷಿಸಿ", ratingText: "ಭಾಲ್ಕಿಯ ರೋಗಿಗಳಿಂದ ಉತ್ತಮ ಶ್ರೇಯಾಂಕ", badgeEmergency: "ತುರ್ತು ಸೇವೆ ಲಭ್ಯ",
-                secAboutTag: "ನಾವು ಯಾರು", secAboutTitle: "ನಂಬಿಕೆಯ ಮೇಲೆ ನಿರ್ಮಿತವಾದ, 24 ಗಂಟೆಯೂ ಕಾರ್ಯಾಚರಿಸುವ ಆಸ್ಪತ್ರೆ.",
-                card1Title: "ಭಾಲ್ಕಿಯಲ್ಲಿ ನಂಬಿಕಸ್ಥ ಸೇವೆ", card1Desc: "ವರ್ಷಗಳಿಂದ ಶೇಡೋಳೆ ಆಸ್ಪತ್ರೆಯು ಭಾಲ್ಕಿ ಮತ್ತು ಸುತ್ತಮುತ್ತಲಿನ ಗ್ರಾಮಗಳ ಜನರಿಗೆ ಸೇವೆ ನೀಡುತ್ತಿದೆ.",
-                card2Title: "ಹೃದ್ರೋಗ ತಜ್ಞರು", card2Desc: "ಹೃದಯ ಸಂಬಂಧಿ ಕಾಯಿಲೆಗಳ ನಿಖರ ತಪಾಸಣೆ ಮತ್ತು ಚಿಕಿತ್ಸೆ.",
-                card3Title: "ನಿರಂತರ ಸೇವೆ", card3Desc: "ನಮ್ಮ ಐಸಿಯು ಮತ್ತು ತುರ್ತು ವಿಭಾಗ 24 ಗಂಟೆಯೂ ತೆರೆದಿರುತ್ತದೆ.",
-                secServicesTag: "ನಮ್ಮ ಸೇವೆಗಳು", secServicesTitle: "ಒಂದೇ ಸೂರಿನಡಿ ಸಂಪೂರ್ಣ ವೈದ್ಯಕೀಯ ಆರೈಕೆ.",
-                srv1: "ಹೃದ್ರೋಗ ಚಿಕಿತ್ಸೆ", srv1Desc: "ಹೃದಯ ಕಾಯಿಲೆ, ಅಧಿಕ ರಕ್ತದೊತ್ತಡ ಚಿಕಿತ್ಸೆ.",
-                srv2: "ತುರ್ತು ಚಿಕಿತ್ಸೆ & ICU", srv2Desc: "24 ಗಂಟೆಗಳ ತುರ್ತು ವೈದ್ಯಕೀಯ ಪ್ರತಿಕ್ರಿಯೆ.",
-                srv3: "ಸಾಮಾನ್ಯ ವೈದ್ಯಕೀಯ ವಿಭಾಗ", srv3Desc: "ದೈನಂದಿನ ಅನಾರೋಗ್ಯದ ಸಂಪೂರ್ಣ ತಪಾಸಣೆ.",
-                srv4: "ECG ಮತ್ತು ರೋಗನಿರ್ಣಯ", srv4Desc: "ತ್ವರಿತ ನಿರ್ಧಾರಕ್ಕಾಗಿ ಆಸ್ಪತ್ರೆಯಲ್ಲೇ ಇಸಿಜಿ ಮತ್ತು ಲ್ಯಾಬ್ ಸೌಲಭ್ಯ.",
-                srv5: "24x7 ಆಂಬುಲೆನ್ಸ್", srv5Desc: "ಅಗತ್ಯವಿದ್ದಾಗ ತ್ವರಿತ ರೋಗಿ ಸಾಗಣೆ ಸೇವೆ.",
-                srv6: "ಆರೋಗ್ಯ ತಪಾಸಣೆ", srv6Desc: "ಇಡೀ ಕುಟುಂಬಕ್ಕೆ ನಿಯಮಿತ ಮತ್ತು ಮುನ್ನೆಚ್ಚರಿಕೆ ಆರೋಗ್ಯ ತಪಾಸಣೆ.",
-                secPhysicianTag: "ಮುಖ್ಯ ವೈದ್ಯರು", physicianRole: "ಹೃದ್ರೋಗ ತಜ್ಞರು & ಮುಖ್ಯ ವೈದ್ಯರು",
-                physicianBio: "ಡಾ. ಗುಂಡೇರಾವ್ ಬಿ. ಶೇಡೋಳೆ ಅವರು ಭಾಲ್ಕಿಯಲ್ಲಿ ಸುಪ್ರಸಿದ್ಧ ಹೃದ್ರೋಗ ತಜ್ಞರಾಗಿದ್ದಾರೆ.",
-                specTag: "ನಮ್ಮ ತಜ್ಞರು", specTitle: "ವಿವಿಧ ವಿಭಾಗಗಳಲ್ಲಿ ತಜ್ಞರ ಆರೈಕೆ.",
-                drManish: "ಡಾ. ಮನೀಶ್ ಕುಲಕರ್ಣಿ", specNeuro: "MD, DM ನರರೋಗ ತಜ್ಞರು", descNeuro: "ಪಾರ್ಶ್ವವಾಯು, ಮೂರ್ಛೆರೋಗ, ಮೈಗ್ರೇನ್ ತಜ್ಞರು.", visitNeuro: "ಭೇಟಿ: ತಿಂಗಳ 1ನೇ ಗುರುವಾರ",
-                drShailesh: "ಡಾ. ಶೈಲೇಶ್ ಮಠ್", specSurg: "MS, FMAS ಶಸ್ತ್ರಚಿಕಿತ್ಸಕರು", descSurg: "ಸುಧಾರಿತ ಲ್ಯಾಪರೊಸ್ಕೋಪಿಕ್ ಮತ್ತು ಸಾಮಾನ್ಯ ಶಸ್ತ್ರಚಿಕಿತ್ಸೆ.", visitSurg: "ಭೇಟಿ ನೀಡುವ ತಜ್ಞರು",
-                drDinesh: "ಡಾ. ದಿನೇಶ್ ಅಣ್ಣಿಗೇರಿ", specPhysio: "ಫಿಸಿಯೋಥೆರಪಿಸ್ಟ್", descPhysio: "ಕುತ್ತಿಗೆ ನೋವು, ಬೆನ್ನು ನೋವು ಮತ್ತು ಕ್ರೀಡಾ ಗಾಯಗಳ ಚಿಕಿತ್ಸೆ.", visitPhysio: "ಸೋಮ-ಶನಿ (ಬೆಳಗ್ಗೆ 10 - ಸಂಜೆ 6)",
-                drPiles: "ಡಾ. ನಮ್ರತಾ & ಡಾ. ತಾನಾಜಿ", specPiles: "B.A.M.S ತಜ್ಞರು", descPiles: "ಪೈಲ್ಸ್, ಫಿಶರ್, ಫಿಸ್ಟುಲಾ ಮತ್ತು ಪಂಚಕರ್ಮ ತಜ್ಞರು.", visitPiles: "ಆಸ್ಪತ್ರೆಯ ತಜ್ಞರು",
-                secFacTag: "ಆಸ್ಪತ್ರೆಯ ಒಳನೋಟ", secFacTitle: "ನೈರ್ಮಲ್ಯ, ಶಾಂತತೆ ಮತ್ತು ಸುಸಜ್ಜಿತ ವಾತಾವರಣ.",
-                fac1Title: "ಸಾನ್ವಿ ಮೆಡಿಕಲ್ ಸ್ಟೋರ್", fac2Title: "ಒಳರೋಗಿ ವಿಭಾಗ & ICU", fac3Title: "ರೋಗಿಗಳ ಕಾಯುವಿಕೆ ಕೊಠಡಿ",
-                secContactTag: "ಸಂಪರ್ಕಿಸಿ", secContactTitle: "ಯಾವಾಗ ಬೇಕಾದರೂ ಸಂಪರ್ಕಿಸಿ.", lblAddress: "ವಿಳಾಸ"
+                drDinesh: "Dr. Dinesh Annagiri", specPhysio: "Consultant Physiotherapist", descPhysio: "Cervical pain, back pain, sports injuries & rehab.", visitPhysio: "Mon-Sat (10 AM - 6 PM)",
+                drPiles: "Dr. Namrata & Tanaji", specPiles: "B.A.M.S Specialists", descPiles: "Piles, Fissure, Fistula & Panchakarma Experts.", visitPiles: "In-House Experts",
+                
+                secFacTag: "INSIDE THE HOSPITAL", secFacTitle: "Clean, calm and ready.",
+                fac1Title: "Hospital Exterior & Campus", fac2Title: "In-patient Ward & ICU", fac3Title: "Patient Care Area",
+                secContactTag: "GET IN TOUCH", secContactTitle: "Reach us anytime.", lblAddress: "Address", lblPhone: "Phone"
             },
             hi: {
-                navAbout: "हमारे बारे में", navServices: "सेवाएं", navDoctor: "डॉक्टर", navSpecialists: "विशेषज्ञ", navFacilities: "सुविधाएं", navContact: "संपर्क",
-                tagCardiology: "हृदय रोग विशेषज्ञ", tagLocation: "भालकी, कर्नाटक", tagOpen: "24x7 उपलब्ध",
+                navServices: "इलाज", navDoctor: "डॉक्टर", navSpecialists: "विशेषज्ञ", navFacilities: "सुविधाएं", navContact: "संपर्क",
                 heroTitlePart1: "हर धड़कन को चाहिए", heroTitlePart2: "विशेषज्ञ देखभाल।",
                 heroDesc: "शेडोळे अस्पताल भालकी में उन्नत हृदय और आपातकालीन देखभाल प्रदान करता है।",
-                btnCall: "अस्पताल को कॉल करें", btnDirections: "दिशा-निर्देश देखें", ratingText: "भालकी के मरीजों द्वारा विश्वसनीय रेटिंग", badgeEmergency: "आपातकालीन सेवा चालू",
-                secAboutTag: "हम कौन हैं", secAboutTitle: "विश्वास पर आधारित, 24 घंटे सेवा में तत्पर अस्पताल।",
-                card1Title: "भालकी में स्थापित", card1Desc: "वर्षों से शेडोळे अस्पताल भालकी के लोगों को विश्वसनीय चिकित्सा सेवाएं प्रदान कर रहा है।",
-                card2Title: "हृदय रोग विशेषज्ञ", card2Desc: "आधुनिक उपकरणों के साथ हृदय संबंधी बीमारियों का सटीक उपचार।",
-                card3Title: "सदैव उपलब्ध", card3Desc: "हमारा आईसीयू और इमरजेंसी 24 घंटे खुला रहता है।",
-                secServicesTag: "हमारी सेवाएं", secServicesTitle: "एक ही छत के नीचे संपूर्ण इलाज।",
-                srv1: "कार्डियक केयर", srv1Desc: "हृदय रोग, उच्च रक्तचाप का प्रभावी निदान और उपचार।",
-                srv2: "इमरजेंसी और ICU", srv2Desc: "24 घंटे आपातकालीन सेवा और मॉनिटर की गई आईसीयू यूनिट।",
-                srv3: "जनरल मेडिसिन", srv3Desc: "सामान्य बीमारियों का परामर्श और इलाज।",
-                srv4: "ईसीजी और डायग्नोस्टिक्स", srv4Desc: "त्वरित और सटीक निर्णयों के लिए ऑन-साइट ईसीजी और लैब सहायता।",
-                srv5: "24x7 एम्बुलेंस", srv5Desc: "आवश्यकता पड़ने पर मरीजों के लिए त्वरित एम्बुलेंस परिवहन सेवा।",
-                srv6: "स्वास्थ्य जांच", srv6Desc: "पूरे परिवार के लिए नियमित और निवारक स्वास्थ्य जांच सुविधा।",
+                btnCall: "अस्पताल को कॉल करें", btnDirections: "दिशा-निर्देश देखें", ratingText: "मरीजों द्वारा विश्वसनीय", badgeEmergency: "आपातकालीन सेवा",
+                
+                secServicesTag: "हमारा इलाज", secServicesTitle: "उन्नत सुविधाएं और संपूर्ण देखभाल।",
+                trCardioTitle: "हृदय रोग (Cardiac)", trEmTitle: "आपातकालीन और ICU", trSurgTitle: "सर्जरी (Surgery)", trMedTitle: "सामान्य चिकित्सा", trRehabTitle: "पुनर्वास (Rehab)",
+                
                 secPhysicianTag: "मुख्य चिकित्सक", physicianRole: "हृदय रोग विशेषज्ञ",
                 physicianBio: "डॉ. गुंडेराव बी. शेडोळे भालकी में समर्पित और कुशल हृदय रोग विशेषज्ञ के रूप में जाने जाते हैं।",
+                
                 specTag: "हमारे विशेषज्ञ", specTitle: "विभिन्न विभागों में विशेषज्ञ देखभाल।",
-                drManish: "डॉ. मनीष कुलकर्णी", specNeuro: "MD, DM न्यूरोलॉजिस्ट", descNeuro: "स्ट्रोक, मिर्गी, माइग्रेन और EEG/NCS के विशेषज्ञ।", visitNeuro: "विजिटिंग: पहला गुरुवार",
+                drManish: "डॉ. मनीष कुलकर्णी", specNeuro: "MD, DM न्यूरोलॉजिस्ट", descNeuro: "स्ट्रोक, मिर्गी, माइग्रेन और EEG/NCS", visitNeuro: "विजिटिंग: पहला गुरुवार",
                 drShailesh: "डॉ. शैलेश मठ", specSurg: "MS, FMAS सर्जन", descSurg: "उन्नत लेप्रोस्कोपिक, हर्निया और जनरल सर्जरी।", visitSurg: "विजिटिंग कंसल्टेंट",
-                drDinesh: "डॉ. दिनेश अन्नागिरी", specPhysio: "कंसल्टेंट फिजियोथेरेपिस्ट", descPhysio: "सर्वाइकल पेन, कमर दर्द, और स्पोर्ट्स इंजरी का इलाज।", visitPhysio: "सोम-शनि (सुबह 10 - शाम 6)",
-                drPiles: "डॉ. नम्रता और डॉ. तानाजी", specPiles: "B.A.M.S विशेषज्ञ", descPiles: "बवासीर, फिशर, फिस्टुला और पंचकर्म विशेषज्ञ।", visitPiles: "इन-हाउस विशेषज्ञ",
-                secFacTag: "अस्पताल की झलक", secFacTitle: "स्वच्छ, शांत और तैयार वातावरण।",
-                fac1Title: "सान्वी मेडिकल स्टोर", fac2Title: "इन-पेशेंट वार्ड और ICU", fac3Title: "मरीज देखभाल क्षेत्र",
-                secContactTag: "संपर्क करें", secContactTitle: "किसी भी समय संपर्क करें।", lblAddress: "पता"
+                drDinesh: "डॉ. दिनेश अन्नागिरी", specPhysio: "फिजियोथेरेपिस्ट", descPhysio: "सर्वाइकल पेन, कमर दर्द, और स्पोर्ट्स इंजरी", visitPhysio: "सोम-शनि (सुबह 10 - शाम 6)",
+                drPiles: "डॉ. नम्रता और तानाजी", specPiles: "B.A.M.S विशेषज्ञ", descPiles: "बवासीर, फिशर, फिस्टुला और पंचकर्म", visitPiles: "इन-हाउस विशेषज्ञ",
+                
+                secFacTag: "अस्पताल की झलक", secFacTitle: "स्वच्छ और शांत वातावरण।",
+                fac1Title: "अस्पताल का बाहरी दृश्य", fac2Title: "इन-पेशेंट वार्ड और ICU", fac3Title: "मरीज देखभाल क्षेत्र",
+                secContactTag: "संपर्क करें", secContactTitle: "हमसे कभी भी संपर्क करें।", lblAddress: "पता", lblPhone: "फ़ोन"
+            },
+            kn: {
+                navServices: "ಚಿಕಿತ್ಸೆಗಳು", navDoctor: "ವೈದ್ಯರು", navSpecialists: "ತಜ್ಞರು", navFacilities: "ಸೌಲಭ್ಯಗಳು", navContact: "ಸಂಪರ್ಕ",
+                heroTitlePart1: "ಪ್ರತಿಯೊಂದು ಹೃದಯಬಡಿತಕ್ಕೂ", heroTitlePart2: "ಉತ್ತಮ ಚಿಕಿತ್ಸೆ ಬೇಕು.",
+                heroDesc: "ಶೇಡೋಳೆ ಆಸ್ಪತ್ರೆಯು ಭಾಲ್ಕಿಯಲ್ಲಿ ಸುಧಾರಿತ ಹೃದಯ ಮತ್ತು ತುರ್ತು ಚಿಕಿತ್ಸೆಯನ್ನು ಒದಗಿಸುತ್ತದೆ.",
+                btnCall: "ಕರೆ ಮಾಡಿ", btnDirections: "ದಾರಿ ವೀಕ್ಷಿಸಿ", ratingText: "ರೋಗಿಗಳಿಂದ ಉತ್ತಮ ಶ್ರೇಯಾಂಕ", badgeEmergency: "ತುರ್ತು ಸೇವೆ",
+                
+                secServicesTag: "ನಮ್ಮ ಚಿಕಿತ್ಸೆ", secServicesTitle: "ಸುಧಾರಿತ ಸೌಲಭ್ಯಗಳು ಮತ್ತು ಸಂಪೂರ್ಣ ಕಾಳಜಿ.",
+                trCardioTitle: "ಹೃದ್ರೋಗ", trEmTitle: "ತುರ್ತು ಚಿಕಿತ್ಸೆ & ICU", trSurgTitle: "ಶಸ್ತ್ರಚಿಕಿತ್ಸೆ", trMedTitle: "ಸಾಮಾನ್ಯ ವೈದ್ಯಕೀಯ", trRehabTitle: "ಪುನರ್ವಸತಿ",
+                
+                secPhysicianTag: "ಮುಖ್ಯ ವೈದ್ಯರು", physicianRole: "ಹೃದ್ರೋಗ ತಜ್ಞರು",
+                physicianBio: "ಡಾ. ಗುಂಡೇರಾವ್ ಬಿ. ಶೇಡೋಳೆ ಅವರು ಭಾಲ್ಕಿಯಲ್ಲಿ ಸುಪ್ರಸಿದ್ಧ ಹೃದ್ರೋಗ ತಜ್ಞರಾಗಿದ್ದಾರೆ.",
+                
+                specTag: "ನಮ್ಮ ತಜ್ಞರು", specTitle: "ವಿವಿಧ ವಿಭಾಗಗಳಲ್ಲಿ ತಜ್ಞರ ಆರೈಕೆ.",
+                drManish: "ಡಾ. ಮನೀಶ್ ಕುಲಕರ್ಣಿ", specNeuro: "MD, DM ನರರೋಗ ತಜ್ಞರು", descNeuro: "ಪಾರ್ಶ್ವವಾಯು, ಮೂರ್ಛೆರೋಗ, ಮೈಗ್ರೇನ್", visitNeuro: "ಭೇಟಿ: ತಿಂಗಳ 1ನೇ ಗುರುವಾರ",
+                drShailesh: "ಡಾ. ಶೈಲೇಶ್ ಮಠ್", specSurg: "MS, FMAS ಶಸ್ತ್ರಚಿಕಿತ್ಸಕರು", descSurg: "ಸುಧಾರಿತ ಲ್ಯಾಪರೊಸ್ಕೋಪಿಕ್ ಮತ್ತು ಹರ್ನಿಯಾ.", visitSurg: "ಭೇಟಿ ನೀಡುವ ತಜ್ಞರು",
+                drDinesh: "ಡಾ. ದಿನೇಶ್ ಅಣ್ಣಿಗೇರಿ", specPhysio: "ಫಿಸಿಯೋಥೆರಪಿಸ್ಟ್", descPhysio: "ಕುತ್ತಿಗೆ ನೋವು, ಬೆನ್ನು ನೋವು ಚಿಕಿತ್ಸೆ", visitPhysio: "ಸೋಮ-ಶನಿ (ಬೆಳಗ್ಗೆ 10 - ಸಂಜೆ 6)",
+                drPiles: "ಡಾ. ನಮ್ರತಾ & ತಾನಾಜಿ", specPiles: "B.A.M.S ತಜ್ಞರು", descPiles: "ಪೈಲ್ಸ್, ಫಿಶರ್, ಫಿಸ್ಟುಲಾ ತಜ್ಞರು.", visitPiles: "ಆಸ್ಪತ್ರೆಯ ತಜ್ಞರು",
+                
+                secFacTag: "ಆಸ್ಪತ್ರೆಯ ಒಳನೋಟ", secFacTitle: "ನೈರ್ಮಲ್ಯ ಮತ್ತು ಶಾಂತ ವಾತಾವರಣ.",
+                fac1Title: "ಆಸ್ಪತ್ರೆ ಕಟ್ಟಡ", fac2Title: "ಒಳರೋಗಿ ವಿಭಾಗ & ICU", fac3Title: "ರೋಗಿಗಳ ಕಾಯುವಿಕೆ ಕೊಠಡಿ",
+                secContactTag: "ಸಂಪರ್ಕಿಸಿ", secContactTitle: "ಯಾವಾಗ ಬೇಕಾದರೂ ಸಂಪರ್ಕಿಸಿ.", lblAddress: "ವಿಳಾಸ", lblPhone: "ಫೋನ್"
             },
             mr: {
-                navAbout: "आमच्याबद्दल", navServices: "सेवा", navDoctor: "डॉक्टर", navSpecialists: "तज्ज्ञ", navFacilities: "सुविधा", navContact: "संपर्क",
-                tagCardiology: "हृदयरोग विभाग", tagLocation: "भालकी, कर्नाटक", tagOpen: "24x7 उघडे",
+                navServices: "उपचार", navDoctor: "डॉक्टर", navSpecialists: "तज्ज्ञ", navFacilities: "सुविधा", navContact: "संपर्क",
                 heroTitlePart1: "प्रत्येक धडधड पात्र आहे", heroTitlePart2: "तज्ज्ञ काळजीची.",
                 heroDesc: "शेडोळे हॉस्पिटल भालकीत प्रगत हृदय व आपत्कालीन काळजी आणते.",
-                btnCall: "हॉस्पिटलला कॉल करा", btnDirections: "दिशा पहा", ratingText: "भालकीतील रुग्णांकडून ४.४ रेटिंग", badgeEmergency: "आपत्कालीन सेवा सुरू",
-                secAboutTag: "आम्ही कोण आहोत", secAboutTitle: "विश्वासावर उभे, २४ तास चालणारे रुग्णालय.",
-                card1Title: "भालकीत रुजलेले", card1Desc: "अनेक वर्षांपासून शेडोळे हॉस्पिटल भालकीतील लोकांना विश्वासाने वैद्यकीय सेवा देत आहे.",
-                card2Title: "हृदय तज्ज्ञ", card2Desc: "आधुनिक उपकरणे आणि अनुभवी हातांनी योग्य उपचार.",
-                card3Title: "नेहमी उघडे", card3Desc: "आमचा आयसीयू व आपत्कालीन विभाग २४ तास उघडा असतो.",
-                secServicesTag: "आमच्या सेवा", secServicesTitle: "एकाच छताखाली पूर्ण काळजी.",
-                srv1: "हृदयरोग काळजी", srv1Desc: "हृदयरोग, उच्च रक्तदाब आणि संबंधित आजारांचे निदान व उपचार.",
-                srv2: "आपत्कालीन & ICU", srv2Desc: "पूर्णपणे मॉनिटर केलेल्या आयसीयू युनिटसह २४ तास आपत्कालीन प्रतिसाद.",
-                srv3: "जनरल मेडिसिन", srv3Desc: "रोजच्या आजारांवर सल्ला आणि उपचार.",
-                srv4: "डायग्नोस्टिक्स & ECG", srv4Desc: "जलद व अचूक निर्णयासाठी हॉस्पिटलमध्येच ईसीजी सुविधा.",
-                srv5: "24x7 रुग्णवाहिका", srv5Desc: "जेव्हा व जिथे गरज असेल तेव्हा जलद रुग्ण वाहतूक.",
-                srv6: "आरोग्य तपासणी", srv6Desc: "संपूर्ण कुटुंबासाठी प्रतिबंधात्मक व नियमित आरोग्य तपासणी.",
+                btnCall: "कॉल करा", btnDirections: "दिशा पहा", ratingText: "रुग्णांकडून विश्वासार्ह", badgeEmergency: "आपत्कालीन सेवा",
+                
+                secServicesTag: "आमचे उपचार", secServicesTitle: "प्रगत सुविधा आणि संपूर्ण काळजी.",
+                trCardioTitle: "हृदयरोग", trEmTitle: "आपत्कालीन आणि ICU", trSurgTitle: "सर्जरी", trMedTitle: "सामान्य औषध", trRehabTitle: "पुनर्वसन",
+                
                 secPhysicianTag: "मुख्य डॉक्टर", physicianRole: "हृदयरोग तज्ज्ञ",
                 physicianBio: "डॉ. गुंडेराव बी. शेडोळे हे भालकीतील प्रतिष्ठित ह्दयरोग तज्ज्ञ आहेत.",
+                
                 specTag: "आमचे तज्ज्ञ", specTitle: "विविध विभागांमध्ये तज्ज्ञ काळजी.",
-                drManish: "डॉ. मनीष कुलकर्णी", specNeuro: "MD, DM न्यूरोलॉजिस्ट", descNeuro: "स्ट्रोक, अपस्मार, मायग्रेन आणि EEG/NCS तज्ज्ञ.", visitNeuro: "भेट: पहिला गुरुवार",
-                drShailesh: "डॉ. शैलेश मठ", specSurg: "MS, FMAS सर्जन", descSurg: "प्रगत लॅपरोस्कोपिक, हर्निया आणि जनरल सर्जरी.", visitSurg: "भेट देणारे तज्ज्ञ",
-                drDinesh: "डॉ. दिनेश अन्नागिरी", specPhysio: "कन्सल्टंट फिजिओथेरपिस्ट", descPhysio: "मानेचे दुखणे, पाठदुखी आणि क्रीडा दुखापतींवर उपचार.", visitPhysio: "सोम-शनि (सकाळी 10 - संध्याकाळी 6)",
-                drPiles: "डॉ. नम्रता आणि डॉ. तानाजी", specPiles: "B.A.M.S विशेषज्ञ", descPiles: "मूळव्याध, फिशर, फिस्टुला आणि पंचकर्म विशेषज्ञ.", visitPiles: "इन-हाऊस तज्ज्ञ",
-                secFacTag: "हॉस्पिटलच्या आत", secFacTitle: "स्वच्छ, शांत आणि २४ तास सज्ज.",
-                fac1Title: "सान्fully मेडिकल स्टोअर", fac2Title: "इन-पेशंट वॉर्ड व ICU", fac3Title: "रुग्ण प्रतीक्षा क्षेत्र",
-                secContactTag: "संपर्क साधा", secContactTitle: "कधीही संपर्क साधा.", lblAddress: "पत्ता"
+                drManish: "डॉ. मनीष कुलकर्णी", specNeuro: "MD, DM न्यूरोलॉजिस्ट", descNeuro: "स्ट्रोक, अपस्मार, मायग्रेन आणि EEG/NCS", visitNeuro: "भेट: पहिला गुरुवार",
+                drShailesh: "डॉ. शैलेश मठ", specSurg: "MS, FMAS सर्जन", descSurg: "प्रगत लॅपरोस्कोपिक आणि हर्निया सर्जरी.", visitSurg: "भेट देणारे तज्ज्ञ",
+                drDinesh: "डॉ. दिनेश अन्नागिरी", specPhysio: "फिजिओथेरपिस्ट", descPhysio: "मानेचे दुखणे, पाठदुखी आणि क्रीडा दुखापती", visitPhysio: "सोम-शनि (सकाळी 10 - संध्याकाळी 6)",
+                drPiles: "डॉ. नम्रता आणि तानाजी", specPiles: "B.A.M.S विशेषज्ञ", descPiles: "मूळव्याध, फिशर, फिस्टुला आणि पंचकर्म", visitPiles: "इन-हाऊस तज्ज्ञ",
+                
+                secFacTag: "हॉस्पिटलच्या आत", secFacTitle: "स्वच्छ आणि शांत वातावरण.",
+                fac1Title: "हॉस्पिटलची इमारत", fac2Title: "इन-पेशंट वॉर्ड व ICU", fac3Title: "रुग्ण प्रतीक्षा क्षेत्र",
+                secContactTag: "संपर्क साधा", secContactTitle: "कधीही संपर्क साधा.", lblAddress: "पत्ता", lblPhone: "फोन"
             }
         };
 
@@ -410,11 +448,95 @@
             const data = dictionary[lang] || dictionary.en;
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (data[key]) {
-                    el.innerText = data[key];
-                }
+                if (data[key]) { el.innerText = data[key]; }
             });
         }
+
+        // 3. Scroll Pop-out Effect for Swipe Cards (Mobile Center Focus)
+        document.addEventListener("DOMContentLoaded", function() {
+            const cards = document.querySelectorAll('.swipe-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        entry.target.classList.remove('inactive');
+                    } else {
+                        entry.target.classList.remove('active');
+                        entry.target.classList.add('inactive');
+                    }
+                });
+            }, { root: null, rootMargin: '0px -10% 0px -10%', threshold: 0.6 });
+
+            if (window.innerWidth < 768) {
+                cards.forEach(card => { card.classList.add('inactive'); observer.observe(card); });
+            }
+        });
+
+        // 4. 3D Tilt Effect on Desktop Hover
+        const tiltElements = document.querySelectorAll('.tilt-element');
+        tiltElements.forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+                if(window.innerWidth < 768) return;
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left; 
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const tiltX = ((y - centerY) / centerY) * -5;
+                const tiltY = ((x - centerX) / centerX) * 5;
+                el.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.02, 1.02, 1.02)`;
+                el.style.transition = "none";
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                el.style.transition = "transform 0.5s ease";
+            });
+        });
+
+        // 5. Three.js Background 3D Pulsing Heart
+        const canvas = document.getElementById('heart-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const geometry = new THREE.BufferGeometry();
+        const vertices = [];
+        for (let i = 0; i < 600; i++) {
+            const t = Math.PI * (Math.random() * 2 - 1);
+            const x = 16 * Math.pow(Math.sin(t), 3);
+            const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+            const z = (Math.random() - 0.5) * 8;
+            vertices.push(x * 0.2, y * 0.2, z * 0.2);
+        }
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+        const material = new THREE.PointsMaterial({ color: 0xef4444, size: 0.15, transparent: true, opacity: 0.5 });
+        const heart = new THREE.Points(geometry, material);
+        
+        // Position Heart to the right side on desktop, center on mobile
+        heart.position.x = window.innerWidth > 768 ? 4 : 0;
+        heart.position.y = window.innerWidth > 768 ? 0 : 2;
+        scene.add(heart);
+        camera.position.z = 6;
+
+        let clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+            heart.rotation.y = Math.sin(time * 0.5) * 0.3; // Gentle swing
+            const pulse = 1 + Math.sin(time * 3) * 0.05; // Heartbeat pulse
+            heart.scale.set(pulse, pulse, pulse);
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            heart.position.x = window.innerWidth > 768 ? 4 : 0;
+            heart.position.y = window.innerWidth > 768 ? 0 : 2;
+        });
     </script>
 </body>
 </html>
