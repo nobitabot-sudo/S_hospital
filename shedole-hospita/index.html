@@ -35,8 +35,6 @@
         #heart-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.6; }
 
         /* 3D FLIP CARD CSS */
-        /* 3D FLIP CARD CSS - HEIGHT INCREASED */
-        /* Height ko 580px se 480px kar dijiye */
         .flip-card { perspective: 1000px; height: 440px; }
         @media (min-width: 640px) { .flip-card { height: 480px; } }
         .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
@@ -171,7 +169,7 @@
             <div class="md:col-span-7 space-y-4">
                 <div class="text-xs font-bold uppercase tracking-widest text-red-500" data-i18n="secPhysicianTag">THE PHYSICIAN</div>
                 <h2 class="text-3xl md:text-4xl font-extrabold text-white">Dr. Gunderao B. Shedole</h2>
-                <p class="text-red-400 font-semibold text-base" data-i18n="physicianRole">Cardiologist & Chief Physician</p>
+                <p class="text-red-400 font-semibold text-base" data-i18n="physicianRole">Clinical Cardiac Physician</p>
                 <p class="text-slate-300 text-sm leading-relaxed pt-2" data-i18n="physicianBio">
                     Dr. Gunderao B. Shedole is a respected cardiologist serving Bhalki with dedication and skill. Patients know him for clear guidance, a steady hand in emergencies, and genuine care for every family.
                 </p>
@@ -315,7 +313,6 @@
                 <div class="swipe-card flip-card w-[85vw] md:w-[280px] shrink-0 snap-center">
                     <div class="flip-card-inner">
                         <div class="flip-card-front">
-                            <!-- Removed onerror completely to fix infinite loading -->
                             <div class="zoomable" onclick="event.stopPropagation(); openModal('./dr_namrata.jpg')">
                                 <img src="./IMG_20260808_143859.jpg" alt="Dr. Namrata Shedole" class="w-full h-[200px] object-contain bg-slate-950">
                             </div>
@@ -350,7 +347,6 @@
                 <div class="swipe-card flip-card w-[85vw] md:w-[280px] shrink-0 snap-center">
                     <div class="flip-card-inner">
                         <div class="flip-card-front">
-                            <!-- Removed onerror completely to fix infinite loading -->
                             <div class="zoomable" onclick="event.stopPropagation(); openModal('./dr_tanaji.jpg')">
                                 <img src="./IMG_20260808_145916.jpg" alt="Dr. Tanaji Uchhe" class="w-full h-[200px] object-contain bg-slate-950">
                             </div>
@@ -501,7 +497,7 @@
                 secServicesTag: "WHAT WE TREAT", secServicesTitle: "Advanced facilities & complete care.",
                 trCardioTitle: "Cardiac Care", trEmTitle: "Emergency & ICU", trSurgTitle: "Surgery & Procedures", trMedTitle: "General Medicine", trRehabTitle: "Rehabilitation",
                 
-                secPhysicianTag: "THE PHYSICIAN", physicianRole: "Cardiologist & Chief Physician",
+                secPhysicianTag: "THE PHYSICIAN", physicianRole: "Clinical Cardiac Physician",
                 physicianBio: "Dr. Gunderao B. Shedole is a respected cardiologist serving Bhalki with dedication and skill. Patients know him for clear guidance, a steady hand in emergencies, and genuine care for every family.",
                 
                 specTag: "OUR SPECIALISTS", specTitle: "Expert Care Across Departments.",
@@ -525,7 +521,7 @@
                 secServicesTag: "हमारा इलाज", secServicesTitle: "उन्नत सुविधाएं और संपूर्ण देखभाल।",
                 trCardioTitle: "हृदय रोग (Cardiac)", trEmTitle: "आपातकालीन और ICU", trSurgTitle: "सर्जरी (Surgery)", trMedTitle: "सामान्य चिकित्सा", trRehabTitle: "पुनर्वास (Rehab)",
                 
-                secPhysicianTag: "मुख्य चिकित्सक", physicianRole: "हृदय रोग विशेषज्ञ",
+                secPhysicianTag: "मुख्य चिकित्सक", physicianRole: "क्लिनिकल कार्डियक फिजिशियन",
                 physicianBio: "डॉ. गुंडेराव बी. शेडोळे भालकी में समर्पित और कुशल हृदय रोग विशेषज्ञ के रूप में जाने जाते हैं।",
                 
                 specTag: "हमारे विशेषज्ञ", specTitle: "विभिन्न विभागों में विशेषज्ञ देखभाल।",
@@ -549,7 +545,7 @@
                 secServicesTag: "ನಮ್ಮ ಚಿಕಿತ್ಸೆ", secServicesTitle: "ಸುಧಾರಿತ ಸೌಲಭ್ಯಗಳು ಮತ್ತು ಸಂಪೂರ್ಣ ಕಾಳಜಿ.",
                 trCardioTitle: "ಹೃದ್ರೋಗ", trEmTitle: "ತುರ್ತು ಚಿಕಿತ್ಸೆ & ICU", trSurgTitle: "ಶಸ್ತ್ರಚಿಕಿತ್ಸೆ", trMedTitle: "ಸಾಮಾನ್ಯ ವೈದ್ಯಕೀಯ", trRehabTitle: "ಪುನರ್ವಸತಿ",
                 
-                secPhysicianTag: "ಮುಖ್ಯ ವೈದ್ಯರು", physicianRole: "ಹೃದ್ರೋಗ ತಜ್ಞರು",
+                secPhysicianTag: "ಮುಖ್ಯ ವೈದ್ಯರು", physicianRole: "ಕ್ಲಿನಿಕಲ್ ಕಾರ್ಡಿಯಾಕ್ ಫಿಸಿಶಿಯನ್",
                 physicianBio: "ಡಾ. ಗುಂಡೇರಾವ್ ಬಿ. ಶೇಡೋಳೆ ಅವರು ಭಾಲ್ಕಿಯಲ್ಲಿ ಸುಪ್ರಸಿದ್ಧ ಹೃದ್ರೋಗ ತಜ್ಞರಾಗಿದ್ದಾರೆ.",
                 
                 specTag: "ನಮ್ಮ ತಜ್ಞರು", specTitle: "ವಿವಿಧ ವಿಭಾಗಗಳಲ್ಲಿ ತಜ್ಞರ ಆರೈಕೆ.",
@@ -573,7 +569,7 @@
                 secServicesTag: "आमचे उपचार", secServicesTitle: "प्रगत सुविधा आणि संपूर्ण काळजी.",
                 trCardioTitle: "हृदयरोग", trEmTitle: "आपत्कालीन आणि ICU", trSurgTitle: "सर्जरी", trMedTitle: "सामान्य औषध", trRehabTitle: "पुनर्वसन",
                 
-                secPhysicianTag: "मुख्य डॉक्टर", physicianRole: "हृदयरोग तज्ज्ञ",
+                secPhysicianTag: "मुख्य डॉक्टर", physicianRole: "क्लिनिकल कार्डियाक फिजिशियन",
                 physicianBio: "डॉ. गुंडेराव बी. शेडोळे हे भालकीतील प्रतिष्ठित ह्दयरोग तज्ज्ञ आहेत.",
                 
                 specTag: "आमचे तज्ज्ञ", specTitle: "विविध विभागांमध्ये तज्ज्ञ काळजी.",
