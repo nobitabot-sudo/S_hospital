@@ -15,9 +15,9 @@
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Pop-out Effect for mobile */
-        .swipe-card { transition: all 0.4s ease; }
-        .swipe-card.active { transform: scale(1); opacity: 1; border-color: #ef4444; box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.2); }
+        /* Pop-out Effect for mobile (Removed red border/shadow on active click state) */
+        .swipe-card { transition: all 0.4s ease; outline: none !important; }
+        .swipe-card.active { transform: scale(1); opacity: 1; border-color: #1e293b; box-shadow: none; }
         .swipe-card.inactive { transform: scale(0.92); opacity: 0.6; }
         
         /* Ticker Animation Fix */
@@ -155,7 +155,7 @@
                 <h3 class="text-lg font-bold text-white mb-3" data-i18n="trEmTitle">Emergency & ICU</h3>
                 <ul class="space-y-2 text-sm text-slate-400 font-medium"><li><i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> Road Traffic Accidents</li><li><i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> 24/7 Ventilator Facility</li><li><i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> Paralysis Stroke Care</li></ul>
             </div>
-            <!-- Surgery Card with proper Scalpel Icon -->
+            <!-- Surgery Card with restored Scalpel Icon -->
             <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl hover:border-emerald-500/50 transition">
                 <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-scalpel"></i></div>
                 <h3 class="text-lg font-bold text-white mb-3" data-i18n="trSurgTitle">Surgery & Procedures</h3>
@@ -211,7 +211,7 @@
                     <div class="text-xs font-bold uppercase tracking-widest text-red-500 mb-2" data-i18n="specTag">OUR SPECIALISTS</div>
                     <h2 class="text-3xl md:text-4xl font-extrabold text-white" data-i18n="specTitle">Expert Care Across Departments.</h2>
                 </div>
-                <!-- Transparent Slide Buttons as requested by Arun Bhaiya -->
+                <!-- Transparent Slide Buttons -->
                 <div class="flex items-center gap-2">
                     <button onclick="scrollSpecialists(-1)" class="w-10 h-10 rounded-full bg-slate-800/80 border border-slate-700 text-white flex items-center justify-center hover:bg-red-600 transition backdrop-blur">
                         <i class="fa-solid fa-chevron-left text-sm"></i>
@@ -457,7 +457,6 @@
         <p>© 2026 Shedole Hospital, Bhalki. All rights reserved.</p>
     </footer>
 
-    <!-- Normal-sized Close Button for Modal -->
     <div id="imageModal" class="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 opacity-0" style="display:none;">
         <button onclick="closeModal()" class="absolute top-6 right-6 text-white bg-slate-800 hover:bg-red-600 transition normal-close-btn">&times;</button>
         <img id="modalImage" src="" alt="Full Poster" class="max-w-[90vw] max-h-[85vh] object-contain rounded-xl shadow-2xl border border-slate-700">
@@ -499,7 +498,7 @@
         // --- 3. SPECIALISTS SLIDER BUTTON FUNCTION ---
         function scrollSpecialists(direction) {
             const container = document.getElementById('specialist-scroll');
-            const scrollAmount = 300; // kitna scroll hoga ek click par
+            const scrollAmount = 300;
             container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
         }
 
@@ -611,7 +610,7 @@
             });
         }
 
-        // --- 5. SCROLL OBSERVER (Pop-out effect) ---
+        // --- 5. SCROLL OBSERVER (Pop-out effect without red highlight state) ---
         document.addEventListener("DOMContentLoaded", function() {
             const cards = document.querySelectorAll('.swipe-card');
             const observer = new IntersectionObserver((entries) => {
