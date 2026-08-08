@@ -446,9 +446,9 @@
         <p>© 2026 Shedole Hospital, Bhalki. All rights reserved.</p>
     </footer>
 
-    <div id="imageModal" class="fixed inset-0 z-[100] bg-black/95 hidden flex-col items-center justify-center p-4 opacity-0">
+    <div id="imageModal" class="fixed inset-0 z-[100] bg-black/95 items-center justify-center p-4 opacity-0" style="display:none;">
         <button onclick="closeModal()" class="absolute top-6 right-6 text-white text-3xl bg-slate-800 w-12 h-12 rounded-full flex items-center justify-center hover:bg-red-600 transition">&times;</button>
-        <img id="modalImage" src="" alt="Full Poster" class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl border border-slate-700">
+        <img id="modalImage" src="" alt="Full Poster" class="max-w-[90vw] max-h-[85vh] object-contain rounded-xl shadow-2xl border border-slate-700">
     </div>
 
     <script>
@@ -463,14 +463,14 @@
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImage');
             modalImg.src = imgSrc;
-            modal.classList.remove('hidden');
-            setTimeout(() => modal.classList.add('opacity-100'), 10);
+            modal.style.display = 'flex';
+            requestAnimationFrame(() => { modal.style.opacity = '1'; });
         }
 
         function closeModal() {
             const modal = document.getElementById('imageModal');
-            modal.classList.remove('opacity-100');
-            setTimeout(() => modal.classList.add('hidden'), 300);
+            modal.style.opacity = '0';
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
         }
 
         // Close modal when clicking outside the image
