@@ -10,19 +10,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
+        * { -webkit-tap-highlight-color: transparent; } /* Removes blue/red tap highlight on mobile */
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .glass-nav { background: rgba(11, 15, 25, 0.9); backdrop-filter: blur(12px); }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Pop-out Effect for mobile (Removed red border/shadow on active click state) */
-        .swipe-card { transition: all 0.4s ease; outline: none !important; }
+        /* Pop-out Effect for mobile (Red active state removed) */
+        .swipe-card { transition: all 0.4s ease; outline: none; }
         .swipe-card.active { transform: scale(1); opacity: 1; border-color: #1e293b; box-shadow: none; }
         .swipe-card.inactive { transform: scale(0.92); opacity: 0.6; }
         
         /* Ticker Animation Fix */
-        @keyframes marquee { 0% { transform: translateX(20%); } 100% { transform: translateX(-100%); } }
-        .animate-marquee { display: inline-block; white-space: nowrap; animation: marquee 15s linear infinite; }
+      @keyframes marquee { 0% { transform: translateX(20%); } 100% { transform: translateX(-100%); } }
+      .animate-marquee { display: inline-block; white-space: nowrap; animation: marquee 15s linear infinite; }
         
         /* Live Dot Pulse */
         @keyframes pulse-dot { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
@@ -43,17 +44,8 @@
         .flip-card-front { background-color: #0f172a; border: 1px solid #1e293b; display: flex; flex-direction: column; }
         .flip-card-back { background-color: #0b0f19; border: 1px solid #334155; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; padding: 1.5rem; }
         
-        /* Modal Animation & Normal Close Button */
+        /* Modal Animation */
         #imageModal { transition: opacity 0.3s ease; }
-        .normal-close-btn {
-            width: 36px;
-            height: 36px;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
 
         /* Clickable photo affordance */
         .zoomable { cursor: pointer; position: relative; }
@@ -155,9 +147,13 @@
                 <h3 class="text-lg font-bold text-white mb-3" data-i18n="trEmTitle">Emergency & ICU</h3>
                 <ul class="space-y-2 text-sm text-slate-400 font-medium"><li><i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> Road Traffic Accidents</li><li><i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> 24/7 Ventilator Facility</li><li><i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> Paralysis Stroke Care</li></ul>
             </div>
-            <!-- Surgery Card with restored Scalpel Icon -->
+            <!-- Surgery Icon Fixed: SVG inserted manually -->
             <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl hover:border-emerald-500/50 transition">
-                <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-scalpel"></i></div>
+                <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-xl mb-4">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                    </svg>
+                </div>
                 <h3 class="text-lg font-bold text-white mb-3" data-i18n="trSurgTitle">Surgery & Procedures</h3>
                 <ul class="space-y-2 text-sm text-slate-400 font-medium"><li><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> Appendix & Hernia</li><li><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> Hydrocele</li><li><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> Piles, Fissure & Fistula</li></ul>
             </div>
@@ -197,7 +193,7 @@
         </div>
     </section>
 
-    <section id="specialists" class="relative bg-slate-900/40 border-y border-slate-800/80 py-20 overflow-hidden">
+ <section id="specialists" class="relative bg-slate-900/40 border-y border-slate-800/80 py-20 overflow-hidden">
         
         <i class="fa-solid fa-plus bg-cross" style="left: 10%; animation-delay: 0s; font-size: 2rem;"></i>
         <i class="fa-solid fa-plus bg-cross" style="left: 30%; animation-delay: 3s; font-size: 3rem;"></i>
@@ -211,18 +207,14 @@
                     <div class="text-xs font-bold uppercase tracking-widest text-red-500 mb-2" data-i18n="specTag">OUR SPECIALISTS</div>
                     <h2 class="text-3xl md:text-4xl font-extrabold text-white" data-i18n="specTitle">Expert Care Across Departments.</h2>
                 </div>
-                <!-- Transparent Slide Buttons -->
+                <!-- Slide buttons replaced here -->
                 <div class="flex items-center gap-2">
-                    <button onclick="scrollSpecialists(-1)" class="w-10 h-10 rounded-full bg-slate-800/80 border border-slate-700 text-white flex items-center justify-center hover:bg-red-600 transition backdrop-blur">
-                        <i class="fa-solid fa-chevron-left text-sm"></i>
-                    </button>
-                    <button onclick="scrollSpecialists(1)" class="w-10 h-10 rounded-full bg-slate-800/80 border border-slate-700 text-white flex items-center justify-center hover:bg-red-600 transition backdrop-blur">
-                        <i class="fa-solid fa-chevron-right text-sm"></i>
-                    </button>
+                    <button onclick="scrollSpecialists(-1)" class="w-10 h-10 rounded-full bg-slate-800/80 border border-slate-700 text-white flex items-center justify-center hover:bg-red-600 transition backdrop-blur"><i class="fa-solid fa-chevron-left text-sm"></i></button>
+                    <button onclick="scrollSpecialists(1)" class="w-10 h-10 rounded-full bg-slate-800/80 border border-slate-700 text-white flex items-center justify-center hover:bg-red-600 transition backdrop-blur"><i class="fa-solid fa-chevron-right text-sm"></i></button>
                 </div>
             </div>
 
-            <div class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-6 pb-8 px-2 md:px-0 scroll-smooth" id="specialist-scroll">
+            <div class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-6 pb-8 px-2 md:px-0" id="specialist-scroll">
                 
                 <div class="swipe-card flip-card w-[85vw] md:w-[280px] shrink-0 snap-center">
                     <div class="flip-card-inner">
@@ -447,7 +439,9 @@
             </div>
             <div class="lg:col-span-7 bg-slate-900/80 border border-slate-800 p-8 rounded-3xl">
                 <div class="w-full h-64 rounded-2xl overflow-hidden border border-slate-700">
+                  <div class="w-full h-64 rounded-2xl overflow-hidden border border-slate-700">
                   <iframe title="Shedole Hospital Location Map" src="https://maps.google.com/maps?q=Shedole%20Hospital,%20Bhalki&t=&z=15&ie=UTF8&iwloc=&output=embed" class="w-full h-full border-0" allowfullscreen="" loading="lazy"></iframe>
+                 </div> 
                 </div>
             </div>
         </div>
@@ -457,12 +451,18 @@
         <p>© 2026 Shedole Hospital, Bhalki. All rights reserved.</p>
     </footer>
 
-    <div id="imageModal" class="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 opacity-0" style="display:none;">
-        <button onclick="closeModal()" class="absolute top-6 right-6 text-white bg-slate-800 hover:bg-red-600 transition normal-close-btn">&times;</button>
+    <!-- Button Size Fixed -->
+    <div id="imageModal" class="fixed inset-0 z-[100] bg-black/95 items-center justify-center p-4 opacity-0" style="display:none;">
+        <button onclick="closeModal()" class="absolute top-6 right-6 text-white text-xl bg-slate-800 w-9 h-9 rounded-full flex items-center justify-center hover:bg-red-600 transition">&times;</button>
         <img id="modalImage" src="" alt="Full Poster" class="max-w-[90vw] max-h-[85vh] object-contain rounded-xl shadow-2xl border border-slate-700">
     </div>
 
     <script>
+        // --- 0. SLIDE BUTTONS FUNCTION ---
+        function scrollSpecialists(direction) {
+            document.getElementById('specialist-scroll').scrollBy({ left: direction * 300, behavior: 'smooth' });
+        }
+
         // --- 1. FLIP & MODAL LOGIC ---
         function toggleFlip(btn) {
             const card = btn.closest('.flip-card');
@@ -483,9 +483,11 @@
             setTimeout(() => { modal.style.display = 'none'; }, 300);
         }
 
+        // Close modal when clicking outside the image
         document.getElementById('imageModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
+
 
         // --- 2. MOBILE MENU ---
         function toggleMobileMenu() {
@@ -495,21 +497,15 @@
             icon.className = menu.classList.contains('hidden') ? "fa-solid fa-bars text-lg" : "fa-solid fa-xmark text-lg";
         }
 
-        // --- 3. SPECIALISTS SLIDER BUTTON FUNCTION ---
-        function scrollSpecialists(direction) {
-            const container = document.getElementById('specialist-scroll');
-            const scrollAmount = 300;
-            container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
-        }
 
-        // --- 4. TRANSLATION (i18n) ---
+        // --- 3. TRANSLATION (i18n) ---
         const dictionary = {
             en: {
                 navServices: "Treatments", navDoctor: "Doctor", navSpecialists: "Specialists", navFacilities: "Facilities", navContact: "Contact",
                 tagCardiology: "CARDIOLOGY", tagLocation: "BHALKI, KARNATAKA", tagOpen: "24x7 OPEN",
                 heroTitlePart1: "Every heartbeat deserves", heroTitlePart2: "expert care.",
                 heroDesc: "Shedole Hospital brings advanced cardiac and emergency care to Bhalki — trusted by families across the region.",
-                btnCall: "Call the Hospital", btnDirections: "Find Directions", badgeEmergency: "Emergency Open",
+                btnCall: "Call the Hospital", btnDirections: "Find Directions", ratingText: "Rated by patients in Bhalki", badgeEmergency: "Emergency Open",
                 
                 secServicesTag: "WHAT WE TREAT", secServicesTitle: "Advanced facilities & complete care.",
                 trCardioTitle: "Cardiac Care", trEmTitle: "Emergency & ICU", trSurgTitle: "Surgery & Procedures", trMedTitle: "General Medicine", trRehabTitle: "Rehabilitation",
@@ -518,11 +514,11 @@
                 physicianBio: "Dr. Gunderao B. Shedole is a respected cardiologist serving Bhalki with dedication and skill. Patients know him for clear guidance, a steady hand in emergencies, and genuine care for every family.",
                 
                 specTag: "OUR SPECIALISTS", specTitle: "Expert Care Across Departments.",
-                drManish: "Dr. Manish Kulkarni", specNeuro: "MD, DM Neurologist", visitNeuro: "Visiting: 1st Thursday",
-                drShailesh: "Dr. Shailesh Math", specSurg: "MS, FMAS Surgeon", visitSurg: "Visiting Consultant",
-                drDinesh: "Dr. Dinesh Annagiri", specPhysio: "Consultant Physiotherapist", visitPhysio: "Mon-Sat (10-6 PM)",
-                drNamrata: "Dr. Namrata Shedole", specNamrata: "B.A.M.S Specialist", visitNamrata: "In-House Expert",
-                drTanaji: "Dr. Tanaji Uchhe", specTanaji: "B.A.M.S, D.Y.A.", visitTanaji: "In-House Expert",
+                drManish: "Dr. Manish Kulkarni", specNeuro: "MD, DM Neurologist", descNeuro: "Stroke, Epilepsy, Migraine & EEG/NCS.", visitNeuro: "Visiting: 1st Thursday",
+                drShailesh: "Dr. Shailesh Math", specSurg: "MS, FMAS Surgeon", descSurg: "Advanced Laparoscopic, Hernia & General Surgery.", visitSurg: "Visiting Consultant",
+                drDinesh: "Dr. Dinesh Annagiri", specPhysio: "Consultant Physiotherapist", descPhysio: "Cervical pain, back pain, sports injuries & rehab.", visitPhysio: "Mon-Sat (10 AM - 6 PM)",
+                drNamrata: "Dr. Namrata Shedole", specNamrata: "B.A.M.S Specialist", descNamrata: "Ladies Piles, Fissure, Fistula & Panchakarma.", visitNamrata: "In-House Expert",
+                drTanaji: "Dr. Tanaji Uchhe", specTanaji: "B.A.M.S, D.Y.A.", descTanaji: "Piles, Fissure, Fistula & Panchakarma Expert.", visitTanaji: "In-House Expert",
                 
                 secFacTag: "INSIDE THE HOSPITAL", secFacTitle: "Clean, calm and ready.",
                 fac1Title: "Hospital Exterior & Campus", fac2Title: "In-patient Ward & ICU", fac3Title: "Patient Care Area",
@@ -533,7 +529,7 @@
                 tagCardiology: "हृदय रोग विशेषज्ञ", tagLocation: "भालकी, कर्नाटक", tagOpen: "24x7 उपलब्ध",
                 heroTitlePart1: "हर धड़कन को चाहिए", heroTitlePart2: "विशेषज्ञ देखभाल।",
                 heroDesc: "शेडोळे अस्पताल भालकी में उन्नत हृदय और आपातकालीन देखभाल प्रदान करता है।",
-                btnCall: "अस्पताल को कॉल करें", btnDirections: "दिशा-निर्देश देखें", badgeEmergency: "आपातकालीन सेवा",
+                btnCall: "अस्पताल को कॉल करें", btnDirections: "दिशा-निर्देश देखें", ratingText: "मरीजों द्वारा विश्वसनीय", badgeEmergency: "आपातकालीन सेवा",
                 
                 secServicesTag: "हमारा इलाज", secServicesTitle: "उन्नत सुविधाएं और संपूर्ण देखभाल।",
                 trCardioTitle: "हृदय रोग (Cardiac)", trEmTitle: "आपातकालीन और ICU", trSurgTitle: "सर्जरी (Surgery)", trMedTitle: "सामान्य चिकित्सा", trRehabTitle: "पुनर्वास (Rehab)",
@@ -542,11 +538,11 @@
                 physicianBio: "डॉ. गुंडेराव बी. शेडोळे भालकी में समर्पित और कुशल हृदय रोग विशेषज्ञ के रूप में जाने जाते हैं।",
                 
                 specTag: "हमारे विशेषज्ञ", specTitle: "विभिन्न विभागों में विशेषज्ञ देखभाल।",
-                drManish: "डॉ. मनीष कुलकर्णी", specNeuro: "MD, DM न्यूरोलॉजिस्ट", visitNeuro: "विजिटिंग: पहला गुरुवार",
-                drShailesh: "डॉ. शैलेश मठ", specSurg: "MS, FMAS सर्जन", visitSurg: "विजिटिंग कंसल्टेंट",
-                drDinesh: "डॉ. दिनेश अन्नागिरी", specPhysio: "फिजियोथेरेपिस्ट", visitPhysio: "सोम-शनि (सुबह 10 - शाम 6)",
-                drNamrata: "डॉ. नम्रता शेडोळे", specNamrata: "B.A.M.S विशेषज्ञ", visitNamrata: "इन-हाउस विशेषज्ञ",
-                drTanaji: "डॉ. तानाजी उच्छे", specTanaji: "B.A.M.S, D.Y.A.", visitTanaji: "इन-हाउस विशेषज्ञ",
+                drManish: "डॉ. मनीष कुलकर्णी", specNeuro: "MD, DM न्यूरोलॉजिस्ट", descNeuro: "स्ट्रोक, मिर्गी, माइग्रेन और EEG/NCS", visitNeuro: "विजिटिंग: पहला गुरुवार",
+                drShailesh: "डॉ. शैलेश मठ", specSurg: "MS, FMAS सर्जन", descSurg: "उन्नत लेप्रोस्कोपिक, हर्निया और जनरल सर्जरी।", visitSurg: "विजिटिंग कंसल्टेंट",
+                drDinesh: "डॉ. दिनेश अन्नागिरी", specPhysio: "फिजियोथेरेपिस्ट", descPhysio: "सर्वाइकल पेन, कमर दर्द, और स्पोर्ट्स इंजरी", visitPhysio: "सोम-शनि (सुबह 10 - शाम 6)",
+                drNamrata: "डॉ. नम्रता शेडोळे", specNamrata: "B.A.M.S विशेषज्ञ", descNamrata: "महिलाओं के लिए बवासीर, फिशर और पंचकर्म", visitNamrata: "इन-हाउस विशेषज्ञ",
+                drTanaji: "डॉ. तानाजी उच्छे", specTanaji: "B.A.M.S, D.Y.A.", descTanaji: "बवासीर, फिशर, फिस्टुला और पंचकर्म विशेषज्ञ", visitTanaji: "इन-हाउस विशेषज्ञ",
                 
                 secFacTag: "अस्पताल की झलक", secFacTitle: "स्वच्छ और शांत वातावरण।",
                 fac1Title: "अस्पताल का बाहरी दृश्य", fac2Title: "इन-पेशेंट वार्ड और ICU", fac3Title: "मरीज देखभाल क्षेत्र",
@@ -557,7 +553,7 @@
                 tagCardiology: "ಹೃದ್ರೋಗ ವಿಭಾಗ", tagLocation: "ಭಾಲ್ಕಿ, ಕರ್ನಾಟಕ", tagOpen: "24x7 ತೆರೆದಿರುತ್ತದೆ",
                 heroTitlePart1: "ಪ್ರತಿಯೊಂದು ಹೃದಯಬಡಿತಕ್ಕೂ", heroTitlePart2: "ಉತ್ತಮ ಚಿಕಿತ್ಸೆ ಬೇಕು.",
                 heroDesc: "ಶೇಡೋಳೆ ಆಸ್ಪತ್ರೆಯು ಭಾಲ್ಕಿಯಲ್ಲಿ ಸುಧಾರಿತ ಹೃದಯ ಮತ್ತು ತುರ್ತು ಚಿಕಿತ್ಸೆಯನ್ನು ಒದಗಿಸುತ್ತದೆ.",
-                btnCall: "ಕರೆ ಮಾಡಿ", btnDirections: "ದಾರಿ ವೀಕ್ಷಿಸಿ", badgeEmergency: "ತುರ್ತು ಸೇವೆ",
+                btnCall: "ಕರೆ ಮಾಡಿ", btnDirections: "ದಾರಿ ವೀಕ್ಷಿಸಿ", ratingText: "ರೋಗಿಗಳಿಂದ ಉತ್ತಮ ಶ್ರೇಯಾಂಕ", badgeEmergency: "ತುರ್ತು ಸೇವೆ",
                 
                 secServicesTag: "ನಮ್ಮ ಚಿಕಿತ್ಸೆ", secServicesTitle: "ಸುಧಾರಿತ ಸೌಲಭ್ಯಗಳು ಮತ್ತು ಸಂಪೂರ್ಣ ಕಾಳಜಿ.",
                 trCardioTitle: "ಹೃದ್ರೋಗ", trEmTitle: "ತುರ್ತು ಚಿಕಿತ್ಸೆ & ICU", trSurgTitle: "ಶಸ್ತ್ರಚಿಕಿತ್ಸೆ", trMedTitle: "ಸಾಮಾನ್ಯ ವೈದ್ಯಕೀಯ", trRehabTitle: "ಪುನರ್ವಸತಿ",
@@ -566,11 +562,11 @@
                 physicianBio: "ಡಾ. ಗುಂಡೇರಾವ್ ಬಿ. ಶೇಡೋಳೆ ಅವರು ಭಾಲ್ಕಿಯಲ್ಲಿ ಸುಪ್ರಸಿದ್ಧ ಹೃದ್ರೋಗ ತಜ್ಞರಾಗಿದ್ದಾರೆ.",
                 
                 specTag: "ನಮ್ಮ ತಜ್ಞರು", specTitle: "ವಿವಿಧ ವಿಭಾಗಗಳಲ್ಲಿ ತಜ್ಞರ ಆರೈಕೆ.",
-                drManish: "ಡಾ. ಮನೀಶ್ ಕುಲಕರ್ಣಿ", specNeuro: "MD, DM ನರರೋಗ ತಜ್ಞರು", visitNeuro: "ಭೇಟಿ: ತಿಂಗಳ 1ನೇ ಗುರುವಾರ",
-                drShailesh: "ಡಾ. ಶೈಲೇಶ್ ಮಠ್", specSurg: "MS, FMAS ಶಸ್ತ್ರಚಿಕಿತ್ಸಕರು", visitSurg: "ಭೇಟಿ ನೀಡುವ ತಜ್ಞರು",
-                drDinesh: "ಡಾ. ದಿನೇಶ್ ಅಣ್ಣಿಗೇರಿ", specPhysio: "ಫಿಸಿಯೋಥೆರಪಿಸ್ಟ್", visitPhysio: "ಸೋಮ-ಶನಿ (ಬೆಳಗ್ಗೆ 10 - ಸಂಜೆ 6)",
-                drNamrata: "ಡಾ. ನಮ್ರತಾ ಶೇಡೋಳೆ", specNamrata: "B.A.M.S ತಜ್ಞರು", visitNamrata: "ಆಸ್ಪತ್ರೆಯ ತಜ್ಞರು",
-                drTanaji: "ಡಾ. ತಾನಾಜಿ ಉಚ್ಛೆ", specTanaji: "B.A.M.S, D.Y.A.", visitTanaji: "ಆಸ್ಪತ್ರೆಯ ತಜ್ಞರು",
+                drManish: "ಡಾ. ಮನೀಶ್ ಕುಲಕರ್ಣಿ", specNeuro: "MD, DM ನರರೋಗ ತಜ್ಞರು", descNeuro: "ಪಾರ್ಶ್ವವಾಯು, ಮೂರ್ಛೆರೋಗ, ಮೈಗ್ರೇನ್", visitNeuro: "ಭೇಟಿ: ತಿಂಗಳ 1ನೇ ಗುರುವಾರ",
+                drShailesh: "ಡಾ. ಶೈಲೇಶ್ ಮಠ್", specSurg: "MS, FMAS ಶಸ್ತ್ರಚಿಕಿತ್ಸಕರು", descSurg: "ಸುಧಾರಿತ ಲ್ಯಾಪರೊಸ್ಕೋಪಿಕ್ ಮತ್ತು ಹರ್ನಿಯಾ.", visitSurg: "ಭೇಟಿ ನೀಡುವ ತಜ್ಞರು",
+                drDinesh: "ಡಾ. ದಿನೇಶ್ ಅಣ್ಣಿಗೇರಿ", specPhysio: "ಫಿಸಿಯೋಥೆರಪಿಸ್ಟ್", descPhysio: "ಕುತ್ತಿಗೆ ನೋವು, ಬೆನ್ನು ನೋವು ಚಿಕಿತ್ಸೆ", visitPhysio: "ಸೋಮ-ಶನಿ (ಬೆಳಗ್ಗೆ 10 - ಸಂಜೆ 6)",
+                drNamrata: "ಡಾ. ನಮ್ರತಾ ಶೇಡೋಳೆ", specNamrata: "B.A.M.S ತಜ್ಞರು", descNamrata: "ಮಹಿಳೆಯರ ಪೈಲ್ಸ್, ಫಿಶರ್ ಮತ್ತು ಪಂಚಕರ್ಮ", visitNamrata: "ಆಸ್ಪತ್ರೆಯ ತಜ್ಞರು",
+                drTanaji: "ಡಾ. ತಾನಾಜಿ ಉಚ್ಛೆ", specTanaji: "B.A.M.S, D.Y.A.", descTanaji: "ಪೈಲ್ಸ್, ಫಿಶರ್, ಫಿಸ್ಟುಲಾ ತಜ್ಞರು.", visitTanaji: "ಆಸ್ಪತ್ರೆಯ ತಜ್ಞರು",
                 
                 secFacTag: "ಆಸ್ಪತ್ರೆಯ ಒಳನೋಟ", secFacTitle: "ನೈರ್ಮಲ್ಯ ಮತ್ತು ಶಾಂತ ವಾತಾವರಣ.",
                 fac1Title: "ಆಸ್ಪತ್ರೆ ಕಟ್ಟಡ", fac2Title: "ಒಳರೋಗಿ ವಿಭಾಗ & ICU", fac3Title: "ರೋಗಿಗಳ ಕಾಯುವಿಕೆ ಕೊಠಡಿ",
@@ -581,7 +577,7 @@
                 tagCardiology: "हृदयरोग विभाग", tagLocation: "भालकी, कर्नाटक", tagOpen: "24x7 उघडे",
                 heroTitlePart1: "प्रत्येक धडधड पात्र आहे", heroTitlePart2: "तज्ज्ञ काळजीची.",
                 heroDesc: "शेडोळे हॉस्पिटल भालकीत प्रगत हृदय व आपत्कालीन काळजी आणते.",
-                btnCall: "कॉल करा", btnDirections: "दिशा पहा", badgeEmergency: "आपत्कालीन सेवा",
+                btnCall: "कॉल करा", btnDirections: "दिशा पहा", ratingText: "रुग्णांकडून विश्वासार्ह", badgeEmergency: "आपत्कालीन सेवा",
                 
                 secServicesTag: "आमचे उपचार", secServicesTitle: "प्रगत सुविधा आणि संपूर्ण काळजी.",
                 trCardioTitle: "हृदयरोग", trEmTitle: "आपत्कालीन आणि ICU", trSurgTitle: "सर्जरी", trMedTitle: "सामान्य औषध", trRehabTitle: "पुनर्वसन",
@@ -590,11 +586,11 @@
                 physicianBio: "डॉ. गुंडेराव बी. शेडोळे हे भालकीतील प्रतिष्ठित ह्दयरोग तज्ज्ञ आहेत.",
                 
                 specTag: "आमचे तज्ज्ञ", specTitle: "विविध विभागांमध्ये तज्ज्ञ काळजी.",
-                drManish: "डॉ. मनीष कुलकर्णी", specNeuro: "MD, DM न्यूरोलॉजिस्ट", visitNeuro: "भेट: पहिला गुरुवार",
-                drShailesh: "डॉ. शैलेश मठ", specSurg: "MS, FMAS सर्जन", visitSurg: "भेट देणारे तज्ज्ञ",
-                drDinesh: "डॉ. दिनेश अन्नागिरी", specPhysio: "फिजिओथेरपिस्ट", visitPhysio: "सोम-शनि (सकाळी 10 - संध्याकाळी 6)",
-                drNamrata: "डॉ. नम्रता शेडोळे", specNamrata: "B.A.M.S विशेषज्ञ", visitNamrata: "इन-हाऊस तज्ज्ञ",
-                drTanaji: "डॉ. तानाजी उच्छे", specTanaji: "B.A.M.S, D.Y.A.", visitTanaji: "इन-हाऊस तज्ज्ञ",
+                drManish: "डॉ. मनीष कुलकर्णी", specNeuro: "MD, DM न्यूरोलॉजिस्ट", descNeuro: "स्ट्रोक, अपस्मार, मायग्रेन आणि EEG/NCS", visitNeuro: "भेट: पहिला गुरुवार",
+                drShailesh: "डॉ. शैलेश मठ", specSurg: "MS, FMAS सर्जन", descSurg: "प्रगत लॅपरोस्कोपिक आणि हर्निया सर्जरी.", visitSurg: "भेट देणारे तज्ज्ञ",
+                drDinesh: "डॉ. दिनेश अन्नागिरी", specPhysio: "फिजिओथेरपिस्ट", descPhysio: "मानेचे दुखणे, पाठदुखी आणि क्रीडा दुखापती", visitPhysio: "सोम-शनि (सकाळी 10 - संध्याकाळी 6)",
+                drNamrata: "डॉ. नम्रता शेडोळे", specNamrata: "B.A.M.S विशेषज्ञ", descNamrata: "महिलांसाठी मूळव्याध, फिशर आणि पंचकर्म", visitNamrata: "इन-हाऊस तज्ज्ञ",
+                drTanaji: "डॉ. तानाजी उच्छे", specTanaji: "B.A.M.S, D.Y.A.", descTanaji: "मूळव्याध, फिशर, फिस्टुला आणि पंचकर्म तज्ज्ञ", visitTanaji: "इन-हाऊस तज्ज्ञ",
                 
                 secFacTag: "हॉस्पिटलच्या आत", secFacTitle: "स्वच्छ आणि शांत वातावरण.",
                 fac1Title: "हॉस्पिटलची इमारत", fac2Title: "इन-पेशंट वॉर्ड व ICU", fac3Title: "रुग्ण प्रतीक्षा क्षेत्र",
@@ -610,7 +606,7 @@
             });
         }
 
-        // --- 5. SCROLL OBSERVER (Pop-out effect without red highlight state) ---
+        // --- 4. SCROLL OBSERVER (Pop-out effect) ---
         document.addEventListener("DOMContentLoaded", function() {
             const cards = document.querySelectorAll('.swipe-card');
             const observer = new IntersectionObserver((entries) => {
@@ -628,18 +624,20 @@
             }
         });
 
-        // --- 6. 3D HEART CANVAS ---
+        // --- 5. 3D HEART CANVAS ---
+        // --- 5. 3D HEART CANVAS (SMART JUGAAD) ---
         const canvas = document.getElementById('heart-canvas');
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         
+        // Optimization 1: Low-power rendering
         const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: false });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Mac/High-end screen pe load kam karega
         renderer.setSize(window.innerWidth, window.innerHeight);
 
         const geometry = new THREE.BufferGeometry();
         const vertices = [];
-        for (let i = 0; i < 400; i++) {
+        for (let i = 0; i < 400; i++) { // Particles thode kam kiye, look same rahega
             const t = Math.PI * (Math.random() * 2 - 1);
             const x = 16 * Math.pow(Math.sin(t), 3);
             const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
@@ -656,18 +654,23 @@
         camera.position.z = 6;
 
         let clock = new THREE.Clock();
+        
+        // Optimization 2: Smart Sensor (Scroll karte hi Pause hoga)
         let isHeartVisible = true;
         const heartObserver = new IntersectionObserver((entries) => {
             isHeartVisible = entries[0].isIntersecting;
         }, { threshold: 0 });
         heartObserver.observe(canvas);
 
+        // Optimization 3: FPS Limiter
         let lastRenderTime = 0;
-        const fpsLimit = 30;
+        const fpsLimit = 30; // 30 Frames per second
         const frameDuration = 1000 / fpsLimit;
 
         function animate(currentTime) {
             requestAnimationFrame(animate);
+            
+            // Faltu rendering rokne ka Jugaad
             if (!isHeartVisible) return; 
             if (currentTime - lastRenderTime < frameDuration) return;
 
@@ -678,7 +681,7 @@
             heart.scale.set(pulse, pulse, pulse);
             renderer.render(scene, camera);
         }
-        requestAnimationFrame(animate);
+        requestAnimationFrame(animate); // Naya function call
 
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
